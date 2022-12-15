@@ -18,3 +18,6 @@ INSERT INTO t_user VALUES
   (2, 'Henry', 'Walker', 'walker@gmail.com', '1234'),
   (3, 'Sam', 'Smith', 'smith@gmail.com', '1234'),
   (4, 'Max', 'Alvaro', 'alvaro@gmail.com', '1234');
+
+ALTER TABLE t_user
+ADD COLUMN profile INT(10) DEFAULT NULL;

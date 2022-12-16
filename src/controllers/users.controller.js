@@ -39,18 +39,15 @@ export const getUser = async (req, res) => {
 
 export const createUser = async (req, res) => {
   const { firstName, lastName, email, password, profile } = req.body
+  const result = await pool.query('SELECT * FROM t_user WHERE t_user.email = ?', [email])
 
   try {
-    const result = await pool.query('SELECT * FROM t_user WHERE t_user.email = ?', [email])
-
-    console.log(result[0])
-
     // Si no existe el correo, crea en la BD
     if (result[0].length === 0) {
-      const [rows] = await pool.query('INSERT INTO t_user (firstName, lastName, email, password, profile) VALUES (?, ?, ?, ?, ?)', [firstName, lastName, email, password, profile])
-      
-      const salt = await bcryptjs.genSalt(10)
+      const salt = await bcryptjs.genSalt()
       const hash = await bcryptjs.hash(password, salt)
+
+      const [rows] = await pool.query('INSERT INTO t_user (firstName, lastName, email, password, profile) VALUES (?, ?, ?, ?, ?)', [firstName, lastName, email, hash, profile])
 
       res.status(200).send({
         status: 'SUCCESS',
@@ -59,9 +56,8 @@ export const createUser = async (req, res) => {
           firstName,
           lastName,
           email,
-          password,
+          hash,
           profile,
-          hash
         }
       })
     } else {

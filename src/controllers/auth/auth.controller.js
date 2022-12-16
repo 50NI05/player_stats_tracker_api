@@ -13,10 +13,6 @@ export const auth = async (req, res) => {
     const passwordDB = typeof userDB?.password === 'string' ? userDB.password : ''
     const userId = typeof userDB?.id === 'number' ? userDB.id : null
 
-    // console.log(userDB);
-    // console.log(passwordDB);
-    // console.log(userId);
-    // res.send('Hola')
     if (users.length === 0) {
       res.status(400).json({
         status: 'Error',
@@ -24,15 +20,8 @@ export const auth = async (req, res) => {
       })
     }
 
-    const salt = await bcryptjs.genSalt(10)
-    const hash = await bcryptjs.hash(password, salt)
-
-    // console.log('hash: ', hash);
-
     const validatePassword = (passwordDB === password ? true : false)
 
-    // console.log(validatePassword);
-    
     if (!validatePassword) {
       res.status(400).json({
         status: 'Error',
@@ -50,7 +39,7 @@ export const auth = async (req, res) => {
         data: 'Error token'
       })
     }
-    
+
     res.send({
       status: 'SUCCESS',
       data: token

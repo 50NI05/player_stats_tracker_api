@@ -1,4 +1,5 @@
 import { pool } from '../db.js'
+import bcryptjs from "bcryptjs";
 
 export const getUsers = async (req, res) => {
   try {
@@ -42,10 +43,16 @@ export const createUser = async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM t_user WHERE t_user.email = ?', [email])
 
+    console.log(result[0])
+
     // Si no existe el correo, crea en la BD
     if (result[0].length === 0) {
       const [rows] = await pool.query('INSERT INTO t_user (firstName, lastName, email, password, profile) VALUES (?, ?, ?, ?, ?)', [firstName, lastName, email, password, profile])
-      res.send({
+      
+      const salt = await bcryptjs.genSalt(10)
+      const hash = await bcryptjs.hash(password, salt)
+
+      res.status(200).send({
         status: 'SUCCESS',
         data: {
           id: rows.insertId,
@@ -53,7 +60,8 @@ export const createUser = async (req, res) => {
           lastName,
           email,
           password,
-          profile
+          profile,
+          hash
         }
       })
     } else {
@@ -64,7 +72,7 @@ export const createUser = async (req, res) => {
     }
 
   } catch (error) {
-    return res.status(500).json({
+    res.status(500).json({
       status: 'Error',
       data: 'Something goes wrong'
     })

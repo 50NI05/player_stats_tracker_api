@@ -1,5 +1,4 @@
 import { pool } from '../../db.js'
-import bcryptjs from "bcryptjs";
 import { generateJWT } from '../../helpers/generateJWT.js';
 
 export const auth = async (req, res) => {
@@ -14,7 +13,9 @@ export const auth = async (req, res) => {
     const passwordDB = typeof userDB?.password === 'string' ? userDB.password : ''
     const userId = typeof userDB?.id === 'number' ? userDB.id : null
 
-    console.log(userDB);
+    // console.log(userDB);
+    // console.log(passwordDB);
+    // console.log(userId);
     // res.send('Hola')
     if (users.length === 0) {
       res.status(400).json({
@@ -24,11 +25,14 @@ export const auth = async (req, res) => {
     }
 
     const salt = await bcryptjs.genSalt(10)
-    const hash = bcryptjs.hash(password, salt)
+    const hash = await bcryptjs.hash(password, salt)
 
-    console.log(hash);
+    // console.log('hash: ', hash);
 
-    const validatePassword = (password === passwordDB ? true : false)
+    const validatePassword = (passwordDB === password ? true : false)
+
+    // console.log(validatePassword);
+    
     if (!validatePassword) {
       res.status(400).json({
         status: 'Error',
@@ -36,9 +40,11 @@ export const auth = async (req, res) => {
       })
     }
 
-    const token = await generateJWT(userId?.toString())
+    const token = await generateJWT(userId.toString())
 
-    if (token === undefined) {
+    console.log(token);
+
+    if (token.length === 0) {
       res.status(400).json({
         status: 'Error',
         data: 'Error token'

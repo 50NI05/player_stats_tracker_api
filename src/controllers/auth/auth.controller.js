@@ -1,7 +1,6 @@
 import { pool } from '../../db.js'
 import { generateJWT } from '../../helpers/generateJWT.js';
 import bcryptjs from "bcryptjs";
-import jwt from 'jsonwebtoken';
 
 export const auth = async (req, res) => {
   const { body } = req
@@ -18,14 +17,6 @@ export const auth = async (req, res) => {
       })
     } else {
       const validatePassword = await bcryptjs.compare(password, users.find(e => e.password).password)
-      
-      // const userDB = users.find(e => e.password === password)
-      // console.log(userDB);
-      // const passwordDB = typeof userDB.password === 'string' ? userDB.password : ''
-      // const userId = typeof userDB.id === 'number' ? userDB.id : null
-
-      // const validatePassword = (passwordDB === password ? true : false)
-      
 
       if (!validatePassword) {
         res.status(400).json({

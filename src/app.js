@@ -1,6 +1,6 @@
 // const express = require('express')
 import express from 'express'
-import usersRoutes from './routes/users.routes.js'
+import usersRoutes from './routes/users/users.routes.js'
 import indexRoutes from './routes/index.routes.js'
 import loginRoutes from './routes/auth/auth.routes.js';
 

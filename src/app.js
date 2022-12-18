@@ -3,10 +3,17 @@ import express from 'express'
 import usersRoutes from './routes/users/users.routes.js'
 import indexRoutes from './routes/index.routes.js'
 import loginRoutes from './routes/auth/auth.routes.js';
+import session from 'express-session';
 
 const app = express()
 
 app.use(express.json())
+
+app.use(session({
+  secret: 'secret',
+  resave: true,
+  saveUninitialized: true,
+}))
 
 app.use(indexRoutes)
 app.use('/api', usersRoutes)

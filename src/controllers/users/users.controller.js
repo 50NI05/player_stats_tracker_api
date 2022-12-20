@@ -61,7 +61,7 @@ export const createUser = async (req, res) => {
         }
       })
     } else {
-      res.status(404).json({
+      res.status(200).json({
         status: 'Error',
         data: 'Email already exist'
       })
@@ -84,7 +84,7 @@ export const updateUser = async (req, res) => {
     const [result] = await pool.query('UPDATE t_user SET firstName = IFNULL(?, firstName), lastName = IFNULL(?, lastName), email = IFNULL(?, email), password = IFNULL(?, password) WHERE id = ?', [firstName, lastName, email, password, id])
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({
+      return res.status(200).json({
         status: 'Error',
         data: 'User not found'
       })
@@ -109,7 +109,7 @@ export const deleteUser = async (req, res) => {
     const [result] = await pool.query('DELETE FROM t_user WHERE id = ?', [req.params.id])
 
     if (result.affectedRows <= 0) {
-      return res.status(404).json({
+      return res.status(200).json({
         message: 'User not found'
       })
     }

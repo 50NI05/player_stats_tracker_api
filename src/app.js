@@ -1,10 +1,12 @@
 // const express = require('express')
 import express from 'express'
+import session from 'express-session';
+import cors from "cors";
 import usersRoutes from './routes/users/users.routes.js'
 import indexRoutes from './routes/index.routes.js'
 import loginRoutes from './routes/auth/auth.routes.js';
-import session from 'express-session';
-import cors from "cors";
+import footballSquadsRoutes from "./routes/fooball-players/squad.routes.js";
+import footballPlayersRoutes from "./routes/fooball-players/players.routes.js";
 
 const app = express()
 
@@ -21,6 +23,8 @@ app.use(session({
 app.use(indexRoutes)
 app.use('/api', usersRoutes)
 app.use('/api', loginRoutes)
+app.use('/api', footballSquadsRoutes)
+app.use('/api', footballPlayersRoutes)
 
 app.use((req, res, next) => {
   res.status(404).json({

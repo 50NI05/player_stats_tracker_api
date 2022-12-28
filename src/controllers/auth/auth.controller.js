@@ -50,7 +50,10 @@ export const logIn = async (req, res) => {
 
           res.send({
             status: 'SUCCESS',
-            data: token
+            data: token,
+            id: users[0].id,
+            profile: users[0].profile,
+            email: users[0].email
           })
         }
       }

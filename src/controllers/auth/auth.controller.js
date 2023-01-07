@@ -17,7 +17,7 @@ export const logIn = async (req, res) => {
       const [users] = await pool.query('SELECT * FROM t_user WHERE t_user.email = ?', [email])
 
       if (users.length === 0) {
-        res.status(400).json({
+        res.json({
           status: 'Error',
           data: 'Incorrect Email! Please try again'
         })
@@ -25,7 +25,7 @@ export const logIn = async (req, res) => {
         const validatePassword = await bcryptjs.compare(password, users[0].password)
 
         if (!validatePassword) {
-          res.status(400).json({
+          res.json({
             status: 'Error',
             data: 'Incorrect Password! Please try again'
           })
@@ -42,7 +42,7 @@ export const logIn = async (req, res) => {
           res.cookie('jwt', token, cookieOptions);
 
           if (token.length === 0) {
-            res.status(400).json({
+            res.json({
               status: 'Error',
               data: 'Error token'
             })

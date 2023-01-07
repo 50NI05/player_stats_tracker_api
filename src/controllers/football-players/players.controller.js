@@ -22,7 +22,7 @@ export const players = (req, res, next) => {
     })
   }).catch(function (error) {
     console.log(error);
-    res.json({
+    res.status(500).json({
       status: 'Error',
       data: error
     })

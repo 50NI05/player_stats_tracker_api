@@ -61,7 +61,7 @@ export const createUser = async (req, res) => {
         }
       })
     } else {
-      res.status(200).json({
+      res.json({
         status: 'Error',
         data: 'Email already exist'
       })

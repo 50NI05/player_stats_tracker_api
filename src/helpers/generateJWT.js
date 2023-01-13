@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-export const generateJWT = (id) => {
+export const generateJWT = (id, firstName, lastName, email, password, profile) => {
   return new Promise((resolve, reject) => {
     const payload = { id }
     const secret = process.env.TOKEN_SECRET

@@ -4,6 +4,6 @@ import { verifyToken } from "../../middlewares/validateToken.js";
 
 const router = expressRouter.Router()
 
-router.get('/squad/:team', squads)
+router.get('/squad/:team', verifyToken, squads)
 
 export default router

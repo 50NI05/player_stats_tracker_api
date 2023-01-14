@@ -12,18 +12,18 @@ export const logIn = async (req, res) => {
   if (session[0].token !== null) {
     res.json({
       status: 'ERROR',
-      data: 'User already logged in.'
+      // data: 'User already logged in.'
+      data: 'El usuario ya ha iniciado sesión.'
     });
   } else {
     try {
       const [users] = await pool.query('SELECT * FROM t_user WHERE t_user.email = ?', [email])
 
-      console.log(users[0]);
-
       if (users.length === 0) {
         res.json({
           status: 'Error',
-          data: 'Incorrect Email! Please try again'
+          // data: 'Incorrect Email! Please try again'
+          data: 'Correo electrónico incorrecto Por favor, inténtelo de nuevo'
         })
       } else {
         const validatePassword = await bcryptjs.compare(password, users[0].password)
@@ -31,19 +31,11 @@ export const logIn = async (req, res) => {
         if (!validatePassword) {
           res.json({
             status: 'Error',
-            data: 'Incorrect Password! Please try again'
+            // data: 'Incorrect Password! Please try again'
+            data: 'Contraseña incorrecta Por favor, inténtelo de nuevo'
           })
         } else {
           const token = await generateJWT(users[0].id, users[0].firstName, users[0].lastName, users[0].email, users[0].password, users[0].profile)
-
-          // const cookieOptions = {
-          //   expires: new Date(
-          //     Date.now() + 3600000
-          //   ),
-          //   httpOnly: true
-          // }
-          // req.session.login = true;
-          // res.cookie('jwt', token, cookieOptions);
 
           if (token.length === 0) {
             res.json({
@@ -64,7 +56,8 @@ export const logIn = async (req, res) => {
             } else {
               res.send({
                 status: 'ERROR',
-                data: 'Error insert token'
+                // data: 'Error insert token'
+                data: 'Error al insertar token'
               })
             }
           }
@@ -74,7 +67,8 @@ export const logIn = async (req, res) => {
     } catch (error) {
       res.status(500).json({
         status: 'Error',
-        data: 'An error has occurred'
+        // data: 'An error has occurred'
+        data: 'Ha ocurrido un error'
       })
     }
   }
@@ -88,8 +82,6 @@ export const logOut = async (req, res) => {
 
   if (session[0].token !== null) {
     const [rows] = await pool.query('UPDATE t_user SET token = null WHERE id = ?', [session[0].id])
-    // res.clearCookie('jwt');
-    // req.session.login = false
 
     if (rows.affectedRows > 0) {
       res.status(200).json({
@@ -104,7 +96,7 @@ export const logOut = async (req, res) => {
   } else {
     res.json({
       status: 'ERROR',
-      data: 'User is not logged in.'
+      data: 'El usuario no ha iniciado sesión.'
     });
   }
 }

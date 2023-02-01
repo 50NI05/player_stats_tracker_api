@@ -5,12 +5,12 @@ const router = expressRouter.Router()
 
 router.get('/users', getUsers)
 
-router.get('/users/:id', getUser)
+router.get('/user/:id', getUser)
 
-router.post('/user/register', createUser)
+router.post('/register', createUser)
 
-router.patch('/users/:id', updateUser)
+router.patch('/update/:id', updateUser)
 
-router.delete('/users/:id', deleteUser)
+router.delete('/delete/:id', deleteUser)
 
 export default router

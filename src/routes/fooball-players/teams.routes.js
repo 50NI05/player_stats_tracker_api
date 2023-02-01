@@ -1,10 +1,10 @@
 import expressRouter from 'express';
-import { logIn, logOut } from '../../controllers/auth/auth.controller.js'
+import { teams, addTeam } from "../../controllers/football-players/teams.controller.js";
 import { verifyToken } from "../../middlewares/validateToken.js";
 
 const router = expressRouter.Router()
 
-router.post('/login', logIn)
-router.post('/logout', verifyToken, logOut)
+router.get('/teams', verifyToken, teams)
+router.post('/addTeam', addTeam)
 
 export default router

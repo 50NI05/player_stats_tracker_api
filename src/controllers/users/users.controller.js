@@ -11,7 +11,8 @@ export const getUsers = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       status: 'Error',
-      data: 'Something goes wrong'
+      // data: 'Something goes wrong'
+      data: 'Algo va mal'
     })
   }
 }
@@ -22,7 +23,8 @@ export const getUser = async (req, res) => {
     if (rows.length <= 0) {
       return res.status(404).json({
         status: 'Error',
-        data: 'User not found'
+        // data: 'User not found'
+        data: 'Usuario no encontrado'
       })
     }
     res.json({
@@ -32,7 +34,8 @@ export const getUser = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       status: 'Error',
-      data: 'Something goes wrong'
+      // data: 'Something goes wrong'
+      data: 'Algo va mal'
     })
   }
 }
@@ -61,16 +64,18 @@ export const createUser = async (req, res) => {
         }
       })
     } else {
-      res.status(404).json({
+      res.json({
         status: 'Error',
-        data: 'Email already exist'
+        // data: 'Email already exist'
+        data: 'El correo electrónico ya existe'
       })
     }
 
   } catch (error) {
     res.status(500).json({
       status: 'Error',
-      data: 'Something goes wrong'
+      // data: 'Something goes wrong'
+      data: 'Algo va mal'
     })
   }
 }
@@ -84,9 +89,10 @@ export const updateUser = async (req, res) => {
     const [result] = await pool.query('UPDATE t_user SET firstName = IFNULL(?, firstName), lastName = IFNULL(?, lastName), email = IFNULL(?, email), password = IFNULL(?, password) WHERE id = ?', [firstName, lastName, email, password, id])
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({
+      return res.status(200).json({
         status: 'Error',
-        data: 'User not found'
+        // data: 'User not found'
+        data: 'Usuario no encontrado'
       })
     }
 
@@ -99,7 +105,8 @@ export const updateUser = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       status: 'Error',
-      data: 'Something goes wrong'
+      // data: 'Something goes wrong'
+      data: 'Algo va mal'
     })
   }
 }
@@ -109,8 +116,10 @@ export const deleteUser = async (req, res) => {
     const [result] = await pool.query('DELETE FROM t_user WHERE id = ?', [req.params.id])
 
     if (result.affectedRows <= 0) {
-      return res.status(404).json({
-        message: 'User not found'
+      return res.status(200).json({
+        status: 'Error',
+        // data: 'User not found'
+        data: 'Usuario no encontrado'
       })
     }
 
@@ -118,7 +127,8 @@ export const deleteUser = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       status: 'Error',
-      data: 'Something goes wrong'
+      // data: 'Something goes wrong'
+      data: 'Algo va mal'
     })
   }
 }

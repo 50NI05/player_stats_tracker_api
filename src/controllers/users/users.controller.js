@@ -86,7 +86,10 @@ export const updateUser = async (req, res) => {
   const { firstName, lastName, email, password } = req.body
 
   try {
-    const [result] = await pool.query('UPDATE t_user SET firstName = IFNULL(?, firstName), lastName = IFNULL(?, lastName), email = IFNULL(?, email), password = IFNULL(?, password) WHERE id = ?', [firstName, lastName, email, password, id])
+    const salt = await bcryptjs.genSalt()
+    const hash = await bcryptjs.hash(password, salt)
+
+    const [result] = await pool.query('UPDATE t_user SET firstName = IFNULL(?, firstName), lastName = IFNULL(?, lastName), email = IFNULL(?, email), password = IFNULL(?, password) WHERE id = ?', [firstName, lastName, email, hash, id])
 
     if (result.affectedRows === 0) {
       return res.status(200).json({

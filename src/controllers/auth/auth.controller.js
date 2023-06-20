@@ -33,10 +33,12 @@ export const logIn = async (req, res) => {
               if (response) {
                 res.send({
                   status: 'SUCCESS',
-                  data: token,
-                  id: userData.id,
-                  profile: userData.profile,
-                  email: userData.email
+                  data: {
+                    token: token,
+                    id: userData.id,
+                    profile: userData.profile,
+                    email: userData.email
+                  }
                 })
               } else {
                 res.send({

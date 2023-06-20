@@ -8,11 +8,11 @@ export const UserModel = (sequelize) => {
         autoIncrement: true,
         primaryKey: true,
       },
-      firstName: {
+      firstname: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      lastName: {
+      lastname: {
         type: DataTypes.STRING,
         allowNull: true,
       },

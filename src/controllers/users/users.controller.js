@@ -54,7 +54,7 @@ export const createUser = async (req, res) => {
   try {
     User.findOne(
       {
-        where: { username: data.username }
+        where: { email: data.email }
       }
     ).then(async (response) => {
       if (response === null) {
@@ -62,9 +62,9 @@ export const createUser = async (req, res) => {
         const hash = await bcryptjs.hash(data.password, salt)
 
         User.create({
-          firstName: data.firstName,
-          lastName: data.lastName,
-          username: data.username,
+          firstname: data.firstname,
+          lastname: data.lastname,
+          email: data.email,
           password: hash,
         }).then((user) => {
           res.json({
@@ -106,7 +106,7 @@ export const updateUser = async (req, res) => {
     }).then(user => {
       if (user) {
         User.update(
-          { firstName: data.firstName, lastName: data.lastName, email: data.email, password: data.password },
+          { firstname: data.firstname, lastname: data.lastname, email: data.email, password: data.password },
           { where: { id: id } }
         ).then(response => {
           if (response) {

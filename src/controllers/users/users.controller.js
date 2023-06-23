@@ -1,14 +1,14 @@
 // import { pool } from '../../db.js'
 import bcryptjs from "bcryptjs";
-import { User } from "../../db.js";
+import { Profile, User } from "../../db.js";
 
 export const getUsers = async (req, res) => {
   try {
-    User.findAll().then(users => {
-      res.json({
-        status: 'SUCCESS',
-        data: users
-      })
+    const users = await User.findAll({include: [Profile]});
+
+    res.json({
+      status: 'SUCCESS',
+      data: users
     })
   } catch (error) {
     return res.status(500).json({
@@ -21,24 +21,33 @@ export const getUsers = async (req, res) => {
 
 export const getUser = async (req, res) => {
   const id = [req.params.id]
-
+  
   try {
-    User.findOne({
-      where: { id: id }
-    }).then(response => {
-      if (response === null) {
-        return res.status(404).json({
-          status: 'Error',
-          // data: 'User not found'
-          data: 'Usuario no encontrado'
-        })
-      } else {
-        res.json({
-          status: 'SUCCESS',
-          data: response
-        })
-      }
+    const user = await User.findOne({
+      where: { id: id },
+      include: [Profile]
     })
+    
+    if (user === null) {
+      return res.status(404).json({
+        status: 'Error',
+        // data: 'User not found'
+        data: 'Usuario no encontrado'
+      })
+    } else {
+      res.status(200).json({
+        status: 'SUCCESS',
+        data: {
+          id: user.id,
+          firstname: user.firstname,
+          lastname: user.lastname,
+          email: user.email,
+          password: user.password,
+          token: user.token,
+          profile: user.t_profile.toJSON(),
+        }
+      })
+    }
   } catch (error) {
     return res.status(500).json({
       status: 'Error',
@@ -52,40 +61,50 @@ export const createUser = async (req, res) => {
   let data = req.body;
 
   try {
-    User.findOne(
-      {
-        where: { email: data.email }
-      }
-    ).then(async (response) => {
-      if (response === null) {
-        const salt = await bcryptjs.genSalt()
-        const hash = await bcryptjs.hash(data.password, salt)
+    const findUser = await User.findOne({ where: { email: data.email } });
 
-        User.create({
-          firstname: data.firstname,
-          lastname: data.lastname,
-          email: data.email,
-          password: hash,
-        }).then((user) => {
-          res.json({
-            status: 'SUCCESS',
-            data: user,
-          });
-        }).catch((e) => {
-          console.log(e);
-          res.json({
-            status: 'ERROR',
-            msg: 'Error al registrar usuario'
-          });
+    if (findUser === null) {
+      const salt = await bcryptjs.genSalt()
+      const hash = await bcryptjs.hash(data.password, salt)
+
+      const createUser = await User.create({
+        firstname: data.firstname,
+        lastname: data.lastname,
+        email: data.email,
+        password: hash,
+        id_profile: data.id_profile
+      });
+      
+      if (createUser) {
+        const user = await User.findOne({
+          include: [Profile]
+        })
+        
+        res.json({
+          status: 'SUCCESS',
+          data: {
+            id: user.id,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            email: user.email,
+            password: user.password,
+            token: user.token,
+            profile: user.t_profile.toJSON(),
+          }
         });
       } else {
         res.json({
           status: 'ERROR',
-          // data: 'Email already exist'
-          data: 'El correo electrónico ya existe'
-        })
+          msg: 'Error al registrar usuario'
+        });
       }
-    })
+    } else {
+      res.json({
+        status: 'ERROR',
+        // data: 'Email already exist'
+        data: 'El correo electrónico ya existe'
+      })
+    }
   } catch (error) {
     res.status(500).json({
       status: 'Error',

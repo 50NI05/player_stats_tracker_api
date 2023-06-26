@@ -4,11 +4,19 @@ import { Profile, User } from "../../db.js";
 
 export const getUsers = async (req, res) => {
   try {
-    const users = await User.findAll({include: [Profile]});
+    const users = await User.findAll({ include: [Profile] });
+    const formattedUsers = users.map(e => ({
+      id: e.id,
+      firstname: e.firstname,
+      lastname: e.lastname,
+      email: e.email,
+      token: e.token,
+      profile: e.t_profile.toJSON()
+    }));
 
     res.json({
       status: 'SUCCESS',
-      data: users
+      data: formattedUsers
     })
   } catch (error) {
     return res.status(500).json({
@@ -21,13 +29,13 @@ export const getUsers = async (req, res) => {
 
 export const getUser = async (req, res) => {
   const id = [req.params.id]
-  
+
   try {
     const user = await User.findOne({
       where: { id: id },
       include: [Profile]
     })
-    
+
     if (user === null) {
       return res.status(404).json({
         status: 'Error',
@@ -74,12 +82,13 @@ export const createUser = async (req, res) => {
         password: hash,
         id_profile: data.id_profile
       });
-      
+
       if (createUser) {
         const user = await User.findOne({
+          where: { email: data.email },
           include: [Profile]
         })
-        
+
         res.json({
           status: 'SUCCESS',
           data: {
@@ -117,42 +126,51 @@ export const createUser = async (req, res) => {
 export const updateUser = async (req, res) => {
   const id = req.params.id
   // const id = req.params.id 
-  const data = req.body;  
+  const data = req.body;
 
   try {
-    User.findOne({
-      where: { id: id }
-    }).then(user => {
-      if (user) {
-        User.update(
-          { firstname: data.firstname, lastname: data.lastname, email: data.email, password: data.password },
-          { where: { id: id } }
-        ).then(response => {
-          if (response) {
-            User.findOne({
-              where: { id: id }
-            }).then(response => {
-              res.status(200).json({
-                status: 'SUCCESS',
-                data: response
-              })
-            })
-          } else {
-            res.status(200).json({
-              status: 'ERROR',
-              // data: 'User not found'
-              data: 'Usuario no encontrado'
-            })
+    const user = await User.findOne({ where: { id: id } });
+
+    if (user) {
+      const userUpdate = await User.update(
+        { firstname: data.firstname, lastname: data.lastname, email: data.email, password: data.password, id_profile: data.id_profile },
+        { where: { id: id } }
+      );
+
+      if (userUpdate) {
+        const findUser = await User.findOne({
+          where: { id: id },
+          include: [Profile]
+        });
+
+        console.log(findUser);
+
+        res.json({
+          status: 'SUCCESS',
+          data: {
+            id: findUser.id,
+            firstname: findUser.firstname,
+            lastname: findUser.lastname,
+            email: findUser.email,
+            password: findUser.password,
+            token: findUser.token,
+            profile: findUser.t_profile.toJSON(),
           }
-        })
+        });
       } else {
-        return res.status(200).json({
+        res.status(200).json({
           status: 'ERROR',
           // data: 'User not found'
           data: 'Usuario no encontrado'
         })
       }
-    });
+    } else {
+      return res.status(200).json({
+        status: 'ERROR',
+        // data: 'User not found'
+        data: 'Usuario no encontrado'
+      })
+    }
   } catch (error) {
     return res.status(500).json({
       status: 'Error',
@@ -166,21 +184,21 @@ export const deleteUser = async (req, res) => {
   const id = req.params.id;
 
   try {
-    User.findOne({
-      where: { id: id }
-    }).then(response => {
-      if (response) {
-        response.destroy().then(
-          res.status(200).send()
-        )
-      } else {
-        return res.status(200).json({
-          status: 'ERROR',
-          // data: 'User not found'
-          data: 'Usuario no encontrado'
+    const user = await User.findOne({ where: { id: id } });
+
+    if (user) {
+      user.destroy().then(
+        res.status(200).json({
+          status: 'SUCCESS'
         })
-      }
-    })
+      )
+    } else {
+      res.status(200).json({
+        status: 'ERROR',
+        // data: 'User not found'
+        data: 'Usuario no encontrado'
+      })
+    }
   } catch (error) {
     return res.status(500).json({
       status: 'Error',

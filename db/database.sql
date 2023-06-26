@@ -146,7 +146,7 @@ create table t_penalty (
     PRIMARY KEY (id)
 );
 
-create table t_statistics (
+create table t_statistic (
 	id int not null auto_increment,
     id_team int not null,
     id_league int not null,
@@ -177,7 +177,7 @@ create table t_statistics (
     PRIMARY KEY (id)
 );
 
-create table squad (
+create table t_squad (
 	id int not null auto_increment,
     id_team int not null,
     id_player int not null,

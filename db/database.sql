@@ -1,58 +1,193 @@
-CREATE DATABASE IF NOT EXISTS testDB;
-
+CREATE DATABASE IF NOT EXISTS playerStatsTrackerDB;
+SHOW TABLES FROM playerStatsTrackerDB;
+RENAME TABLE squad TO t_squad;
+drop table t_user;
 SHOW DATABASES;
-
-USE testDB;
-
+USE playerStatsTrackerDB;
 CREATE TABLE t_user (
   id INT(11) NOT NULL AUTO_INCREMENT,
   firstName VARCHAR(45) DEFAULT NULL,
   lastName VARCHAR(45) DEFAULT NULL,
   email VARCHAR(100) DEFAULT NULL,
   password VARCHAR(150) DEFAULT NULL,
-  profile INT(100) DEFAULT 1,
-  token VARCHAR(500) DEFAULT NULL
+  token VARCHAR(600) DEFAULT NULL,
+  id_profile int not null,
+  foreign key (id_profile) references t_profile(id),
   PRIMARY KEY (id)
 );
-
-CREATE TABLE t_team (
-  id INT(11) NOT NULL AUTO_INCREMENT,
-  name VARCHAR(100) DEFAULT NULL,
-  PRIMARY KEY (id)
-);
-
 DESCRIBE t_user;
-DESCRIBE t_team;
-
-INSERT INTO t_user VALUES 
-  (1, 'Joe', 'Tesla', 'tesla@gmail.com', '1234', 1),
-  (2, 'Henry', 'Walker', 'walker@gmail.com', '1234', 1),
-  (3, 'Sam', 'Smith', 'smith@gmail.com', '1234', 1),
-  (4, 'Max', 'Alvaro', 'alvaro@gmail.com', '1234', 1);
-
-INSERT INTO t_team VALUES 
-  (2827, 'Academia Puerto Cabello'),
-  (2817, 'Aragua'),
-  (2810, 'Carabobo'),
-  (2808, 'Caracas'),
-  (2848, 'Deportivo La Guaira'),
-  (2812, 'Deportivo Lara'),
-  (2807, 'Deportivo Táchira'),
-  (2818, 'Estudiantes de Mérida'),
-  (2854, 'Hermanos Colmenárez'),
-  (2825, 'Metropolitanos'),
-  (2824, 'Mineros de Guayana'),
-  (2811, 'Monagas'),
-  (2814, 'Portuguesa'),
-  (2840, 'UCV'),
-  (2806, 'Zamora'),
-  (2805, 'Zulia');
-
 SELECT * FROM t_user;
-SELECT * FROM t_team;
+ALTER TABLE t_user RENAME COLUMN lastName TO lastname;
+ALTER TABLE t_user CHANGE profile id_profile int;
 
-ALTER TABLE t_user MODIFY COLUMN columnName VARCHAR(500) DEFAULT NULL;
+CREATE TABLE t_player (
+	id INT(10) NOT NULL auto_increment,
+    name varchar(50) default null,
+    firstname VARCHAR(50) DEFAULT NULL,
+	lastname VARCHAR(50) DEFAULT NULL,
+    age int default null,
+    birth datetime default null, 
+    nationality varchar(50) default null,
+    height varchar(10) default null,
+    weight varchar(10) default null,
+    photo varchar(100) default null,
+    id_statistic int not null,
+    foreign key (id_statistic) references t_statistic(id),
+    PRIMARY KEY (id)
+);
 
-ALTER TABLE t_user ADD COLUMN columnName VARCHAR(500) DEFAULT NULL;
+create table t_team (
+	id int not null auto_increment,
+    name varchar(50) default null,
+    country varchar(50) default null,
+    founded int default null,
+    logo varchar(100) default null,
+    PRIMARY KEY (id)
+);
 
-UPDATE t_user SER columnName = value WHERE id = value;
+create table t_league (
+	id int not null auto_increment,
+    name varchar(50) default null,
+    country varchar(50) default null,
+    logo varchar(100) default null,
+    season int default null,
+    PRIMARY KEY (id)
+);
+
+create table t_game (
+	id int not null auto_increment,
+    appearences int default null,
+    lineups int default null,
+    minutes int default null,
+    number int default null,
+    position varchar(20) default null,
+    rating int default null,
+    captain boolean default false,
+    PRIMARY KEY (id)
+);
+
+create table t_substitute (
+	id int not null auto_increment,
+    `in` int default null,
+    `out` int default null,
+    bench int default null,
+    PRIMARY KEY (id)
+);
+
+create table t_shot (
+	id int not null auto_increment,
+	total int default null,
+    `on` int default null,
+    PRIMARY KEY (id)
+);
+
+create table t_goal (
+	id int not null auto_increment,
+	total int default null,
+    conceded int default null,
+    assists int default null,
+    saves int default null,
+    PRIMARY KEY (id)
+);
+
+create table t_passe (
+	id int not null auto_increment,
+	total int default null,
+    `key` int default null,
+    accuracy int default null,
+    PRIMARY KEY (id)
+);
+
+create table t_tackle (
+	id int not null auto_increment,
+    total int default null,
+    blocks int default null,
+    interceptions int default null,
+    PRIMARY KEY (id)
+);
+
+create table t_duel (
+	id int not null auto_increment,
+	total int default null,
+    won int default null,
+    PRIMARY KEY (id)
+);
+
+create table t_dribble (
+	id int not null auto_increment,
+    attempts int default null,
+    success int default null,
+    past int default null,
+    PRIMARY KEY (id)
+);
+
+create table t_foul (
+	id int not null auto_increment,
+    drawn int default null,
+    comitted int default null,
+    PRIMARY KEY (id)
+);
+
+create table t_card (
+	id int not null auto_increment,
+    yellow int default null,
+    yellowred int default null,
+    red int default null,
+    PRIMARY KEY (id)
+);
+
+create table t_penalty (
+	id int not null auto_increment,
+    won int default null,
+    committed int default null,
+    scored int default null,
+    missed int default null,
+    saved int default null,
+    PRIMARY KEY (id)
+);
+
+create table t_statistics (
+	id int not null auto_increment,
+    id_team int not null,
+    id_league int not null,
+    id_game int not null,
+	id_substitute int not null,
+    id_shot int not null,
+    id_goal int not null,
+    id_passe int not null,
+    id_tackle int not null,
+	id_duel int not null,
+    id_dribble int not null,
+    id_foul int not null,
+    id_card int not null,
+    id_penalty int not null,
+    foreign key (id_team) references t_team(id),
+    foreign key (id_league) references t_league(id),
+    foreign key (id_game) references t_game(id),
+    foreign key (id_substitute) references t_substitute(id),
+    foreign key (id_shot) references t_shot(id),
+    foreign key (id_goal) references t_goal(id),
+    foreign key (id_passe) references t_passe(id),
+    foreign key (id_tackle) references t_tackle(id),
+    foreign key (id_duel) references t_duel(id),
+    foreign key (id_dribble) references t_dribble(id),
+    foreign key (id_foul) references t_foul(id),
+    foreign key (id_card) references t_card(id),
+    foreign key (id_penalty) references t_penalty(id),
+    PRIMARY KEY (id)
+);
+
+create table squad (
+	id int not null auto_increment,
+    id_team int not null,
+    id_player int not null,
+    foreign key (id_team) references t_team(id),
+    foreign key (id_player) references t_player(id),
+    PRIMARY KEY (id)
+);
+
+create table t_profile (
+	id int not null auto_increment,
+    description varchar(20) default null,
+    PRIMARY KEY (id)
+);

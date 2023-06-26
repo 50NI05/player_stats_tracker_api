@@ -3,14 +3,14 @@ import { getUsers, getUser, createUser, updateUser, deleteUser } from '../../con
 
 const router = expressRouter.Router()
 
-router.get('/users', getUsers)
+router.get('/getUsers', getUsers)
 
-router.get('/user/:id', getUser)
+router.get('/getUser/:id', getUser)
 
 router.post('/register', createUser)
 
-router.patch('/update/:id', updateUser)
+router.patch('/updateUser/:id', updateUser)
 
-router.delete('/delete/:id', deleteUser)
+router.delete('/deleteUser/:id', deleteUser)
 
 export default router

@@ -1,4 +1,4 @@
-# api_software_engineer
+# player_stats_tracker_api
 
 ### Instalación 🔧
 
@@ -9,7 +9,7 @@ npm install
 
 _Dependencias_
 ```bash
-npm i express express-session bcryptjs cors dotenv jsonwebtoken mysql2 axios
+npm i express express-session bcryptjs cors dotenv jsonwebtoken mysql2 axios openai sequelize natural
 ```
 
 ```bash

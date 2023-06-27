@@ -1,29 +1,33 @@
 import DataTypes from "sequelize";
 
-export const TeamModel = (sequelize) => {
-  return sequelize.define('t_team',
+export const PenaltyModel = (sequelize) => {
+  return sequelize.define('t_penalty',
     {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
-      name: {
-        type: DataTypes.STRING,
+      won: {
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
-      country: {
-        type: DataTypes.STRING,
+      committed: {
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
-      founded: {
-        type: DataTypes.STRING,
+      scored: {
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
-      logo: {
-        type: DataTypes.STRING,
+      missed: {
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
+      saved: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      }
     },
     {
       freezeTableName: true,

@@ -1,27 +1,23 @@
 import DataTypes from "sequelize";
 
-export const TeamModel = (sequelize) => {
-  return sequelize.define('t_team',
+export const SubstituteModel = (sequelize) => {
+  return sequelize.define('t_substitute',
     {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
-      name: {
-        type: DataTypes.STRING,
+      in: {
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
-      country: {
-        type: DataTypes.STRING,
+      out: {
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
-      founded: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      logo: {
-        type: DataTypes.STRING,
+      bench: {
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
     },

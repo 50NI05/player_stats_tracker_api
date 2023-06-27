@@ -1,7 +1,7 @@
 import DataTypes from "sequelize";
 
-export const TeamModel = (sequelize) => {
-  return sequelize.define('t_team',
+export const LeagueModel = (sequelize) => {
+  return sequelize.define('t_league',
     {
       id: {
         type: DataTypes.INTEGER,
@@ -16,12 +16,12 @@ export const TeamModel = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      founded: {
+      logo: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      logo: {
-        type: DataTypes.STRING,
+      season: {
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
     },

@@ -1,15 +1,19 @@
 import DataTypes from "sequelize";
 
-export const ProfileModel = (sequelize) => {
-  return sequelize.define('t_profile',
+export const ShotModel = (sequelize) => {
+  return sequelize.define('t_shot',
     {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
-      description: {
-        type: DataTypes.STRING,
+      total: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      on: {
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
     },

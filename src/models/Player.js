@@ -1,13 +1,16 @@
 import DataTypes from "sequelize";
-import { ProfileModel } from "./Profile.js";
 
-export const UserModel = (sequelize) => {
-  return sequelize.define('t_user',
+export const PlayerModel = (sequelize) => {
+  return sequelize.define('t_player',
     {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
+      },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: true,
       },
       firstname: {
         type: DataTypes.STRING,
@@ -17,20 +20,32 @@ export const UserModel = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      email: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      password: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      id_profile: {
+      age: {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
-      token: {
+      birth: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
+      nationality: {
         type: DataTypes.STRING,
+        allowNull: true,
+      },
+      height: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      weight: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      photo: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      id_statistic: {
+        type: DataTypes.INTEGER,
         allowNull: true,
       }
     },
@@ -39,10 +54,4 @@ export const UserModel = (sequelize) => {
       timestamps: false,
     }
   );
-
-  // const Profile = ProfileModel(sequelize);
-
-  // User.belongsTo(Profile, { foreignKey: 'id_profile' });
-
-  // return User
 };

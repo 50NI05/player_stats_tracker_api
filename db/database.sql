@@ -191,3 +191,7 @@ create table t_profile (
     description varchar(20) default null,
     PRIMARY KEY (id)
 );
+
+INSERT INTO t_profile VALUES 
+  (1, 'ADMINISTRATOR'),
+  (2, 'USER');

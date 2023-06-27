@@ -1,68 +1,71 @@
 // import { pool } from '../../db.js'
 import { generateJWT } from '../../helpers/generateJWT.js';
 import bcryptjs from "bcryptjs";
-import { User } from "../../db.js";
+import { Profile, User } from "../../db.js";
 
 export const logIn = async (req, res) => {
   const data = req.body;
 
   try {
-    User.findOne({
-      where: { email: data.email }
-    }).then(async response => {
-      if (response) {
-        const validatePassword = await bcryptjs.compare(data.password, response.password);
-        const userData = response;
+    const user = await User.findOne({
+      where: { email: data.email },
+      include: Profile
+    });
 
-        if (!validatePassword) {
+    if (user) {
+      const validatePassword = await bcryptjs.compare(data.password, user.password);
+
+      if (!validatePassword) {
+        res.json({
+          status: 'Error',
+          // data: 'Incorrect Password! Please try again'
+          data: 'Contraseña incorrecta Por favor, inténtelo de nuevo'
+        })
+      } else {
+        const token = await generateJWT(user.id, user.firstName, user.lastName, user.email, user.password, user.t_profile.toJSON())
+
+        if (token.length == 0) {
           res.json({
             status: 'Error',
-            // data: 'Incorrect Password! Please try again'
-            data: 'Contraseña incorrecta Por favor, inténtelo de nuevo'
+            data: 'Error token'
           })
         } else {
-          const token = await generateJWT(userData.id, userData.firstName, userData.lastName, userData.email, userData.password, userData.profile)
+          const userUpdate = await User.update(
+            { token: token }, 
+            { where: { email: data.email },
+            include: Profile
+          })
 
-          if (token.length == 0) {
-            res.json({
-              status: 'Error',
-              data: 'Error token'
+          if (userUpdate) {
+            res.send({
+              status: 'SUCCESS',
+              data: {
+                token: token,
+                id: user.id,
+                profile: user.t_profile,
+              }
             })
           } else {
-            User.update({ token: token }, { where: { email: data.email } }).then(reponse => {
-              if (response) {
-                res.send({
-                  status: 'SUCCESS',
-                  data: {
-                    token: token,
-                    id: userData.id,
-                    profile: userData.profile,
-                    email: userData.email
-                  }
-                })
-              } else {
-                res.send({
-                  status: 'ERROR',
-                  // data: 'Error insert token'
-                  data: 'Error al insertar token'
-                })
-              }
+            res.send({
+              status: 'ERROR',
+              // data: 'Error insert token'
+              data: 'Error al insertar token'
             })
           }
         }
-      } else {
-        res.json({
-          status: 'Error',
-          // data: 'Incorrect Email! Please try again'
-          data: 'Correo electrónico incorrecto Por favor, inténtelo de nuevo'
-        })
       }
-    })
+    } else {
+      res.json({
+        status: 'Error',
+        // data: 'Incorrect Email! Please try again'
+        data: 'Correo electrónico incorrecto Por favor, inténtelo de nuevo'
+      })
+    }
   } catch (error) {
     res.status(500).json({
       status: 'Error',
       // data: 'An error has occurred'
-      data: 'Ha ocurrido un error'
+      data: 'Ha ocurrido un error.'
     })
   }
 }
@@ -70,10 +73,13 @@ export const logIn = async (req, res) => {
 export const logOut = async (req, res) => {
   const data = req.body
 
-  User.findOne(
-    { where: { id: data.idUser } }
-  ).then(response => {
-    if (response) {
+  try {
+    const user = User.findOne({ 
+      where: { id: data.idUser },
+      include: Profile
+    });
+
+    if (user) {
       User.update({ token: null }, { where: { id: data.idUser } }).then(response => {
         if (response) {
           res.status(200).json({
@@ -91,5 +97,10 @@ export const logOut = async (req, res) => {
         data: 'Usuario no encontrado.'
       });
     }
-  })
+  } catch (error) {
+    res.json({
+      status: 'ERROR',
+      data: 'Ha ocurrido un error.'
+    });
+  }
 }

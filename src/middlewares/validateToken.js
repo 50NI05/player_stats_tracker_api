@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 export const verifyToken = (req, res, next) => {
   const token = req.header('auth-token')
   if (!token) return res.status(401).json({
-    status: 'Error',
+    status: 'ERROR',
     // data: 'Access denied' 
     data: 'Acceso denegado'
   })
@@ -14,7 +14,7 @@ export const verifyToken = (req, res, next) => {
     next()
   } catch (error) {
     res.status(400).json({
-      status: 'Error',
+      status: 'ERROR',
       // data: 'Token is invalid' 
       data: 'El token no es válido'
     })

@@ -1,15 +1,19 @@
 import DataTypes from "sequelize";
 
-export const ProfileModel = (sequelize) => {
-  return sequelize.define('t_profile',
+export const FoulModel = (sequelize) => {
+  return sequelize.define('t_foul',
     {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
-      description: {
-        type: DataTypes.STRING,
+      drawn: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      comitted: {
+        type: DataTypes.INTEGER,
         allowNull: true,
       },
     },

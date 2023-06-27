@@ -1,48 +1,45 @@
 import DataTypes from "sequelize";
-import { ProfileModel } from "./Profile.js";
 
-export const UserModel = (sequelize) => {
-  return sequelize.define('t_user',
+export const GameModel = (sequelize) => {
+  return sequelize.define('t_game',
     {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
-      firstname: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      lastname: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      email: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      password: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      id_profile: {
+      appearences: {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
-      token: {
+      lineups: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      minutes: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      number: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      position: {
         type: DataTypes.STRING,
         allowNull: true,
-      }
+      },
+      rating: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      captain: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+      },
     },
     {
       freezeTableName: true,
       timestamps: false,
     }
   );
-
-  // const Profile = ProfileModel(sequelize);
-
-  // User.belongsTo(Profile, { foreignKey: 'id_profile' });
-
-  // return User
 };

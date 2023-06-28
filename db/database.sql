@@ -195,3 +195,21 @@ create table t_profile (
 INSERT INTO t_profile VALUES 
   (1, 'ADMINISTRATOR'),
   (2, 'USER');
+
+INSERT INTO t_team VALUES 
+  (2827, 'Puerto Cabello', 'Venezuela', 2014, 'https://media-2.api-sports.io/football/teams/2827.png'),
+  (2817, 'Aragua FC', 'Venezuela', 2002, 'https://media-3.api-sports.io/football/teams/2817.png'),
+  (2810, 'Carabobo FC', 'Venezuela', 1997, 'https://media-1.api-sports.io/football/teams/2810.png'),
+  (2808, 'Caracas FC', 'Venezuela', 1967, 'https://media-1.api-sports.io/football/teams/2808.png'),
+  (2848, 'Deportivo La Guaira', 'Venezuela', null, null),
+  (2812, 'Deportivo Lara', 'Venezuela', 2006, 'https://media-1.api-sports.io/football/teams/2812.png'),
+  (2807, 'Deportivo Táchira FC', 'Venezuela', 1974, 'https://media-2.api-sports.io/football/teams/2807.png'),
+  (2818, 'Estudiantes de Mérida FC', 'Venezuela', 1971, 'https://media-3.api-sports.io/football/teams/2818.png'),
+  (2854, 'CD Hermanos Colmenárez', 'Venezuela', 2015, 'https://media-3.api-sports.io/football/teams/2854.png'),
+  (2825, 'Metropolitanos FC', 'Venezuela', 2011, 'https://media-3.api-sports.io/football/teams/2825.png'),
+  (2824, 'Mineros de Guayana', 'Venezuela', 1981, 'https://media-1.api-sports.io/football/teams/2824.png'),
+  (2811, 'Monagas SC', 'Venezuela', 1987, 'https://media-2.api-sports.io/football/teams/2811.png'),
+  (2814, 'Portuguesa FC', 'Venezuela', 1972, 'https://media-1.api-sports.io/football/teams/2814.png'),
+  (2840, 'UCV FC', 'Venezuela', 1950, 'https://media-1.api-sports.io/football/teams/2840.png'),
+  (2806, 'Zamora FC', 'Venezuela', 1977, 'https://media-3.api-sports.io/football/teams/2806.png'),
+  (2805, 'Zulia FC', 'Venezuela', 2005, 'https://media-3.api-sports.io/football/teams/2805.png');

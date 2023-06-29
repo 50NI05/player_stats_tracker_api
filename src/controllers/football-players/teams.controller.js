@@ -11,11 +11,11 @@ export const getTeam = async (req, res) => {
         data: team
       })
     } else {
-      
+
     }
   } catch (error) {
     return res.status(500).json({
-      status: 'Error',
+      status: 'ERROR',
       // data: 'Something goes wrong'
       data: 'Algo va mal'
     })
@@ -23,24 +23,122 @@ export const getTeam = async (req, res) => {
 }
 
 export const addTeam = async (req, res) => {
-  const { id, name } = req.body
-  const result = await pool.query('SELECT * FROM t_team WHERE t_team.id = ?', [id])
+  const data = req.body
+  const findTeam = await Team.findOne({ where: { name: data.name } })
 
   try {
-    if (result[0].length === 0) {
-      const [rows] = await pool.query('INSERT INTO t_team (id, name) VALUES (?, ?)', [id, name])
+    if (findTeam === null) {
+      const createTeam = await Team.create({
+        name: data.name,
+        country: data.country,
+        founded: data.founded,
+        logo: data.logo
+      })
 
-      res.status(200).json({
-        status: 'SUCCESS',
-        data: {
-          id: rows.insertId,
-          name: name
-        }
+      if (createTeam) {
+        res.status(200).json({
+          status: 'SUCCESS',
+          data: {
+            name: createTeam.name,
+            country: createTeam.country,
+            founded: createTeam.founded,
+            logo: createTeam.logo
+          }
+        })
+      } else {
+        res.status(200).json({
+          status: 'ERROR',
+          data: 'Lo sentimos, en este momento no podemos completar el registro de su equipo debido a problemas técnicos. Por favor, intente registrar su equipo nuevamente.'
+        })
+      }
+    } else {
+      res.json({
+        status: 'ERROR',
+        data: `El nombre de equipo ${findTeam.name} ya está en uso. Por favor elija un nombre diferente e inténtelo de nuevo`
       })
     }
   } catch (error) {
     return res.status(500).json({
-      status: 'Error',
+      status: 'ERROR',
+      // data: 'Something goes wrong'
+      data: 'Algo va mal'
+    })
+  }
+}
+
+export const updateTeam = async (req, res) => {
+  const id = req.params.id
+  const data = req.body;
+
+  try {
+    const findTeam = await Team.findOne({ where: { id: id } });
+
+    if (findTeam) {
+      const updateTeam = await Team.update(
+        { name: data.name, country: data.country, founded: data.founded, logo: data.logo },
+        { where: { id: id } }
+      );
+
+      if (updateTeam) {
+        const findUpdatedTeam = await Team.findOne({
+          where: { id: id }
+        });
+
+        res.json({
+          status: 'SUCCESS',
+          data: {
+            id: findUpdatedTeam.id,
+            name: findUpdatedTeam.name,
+            country: findUpdatedTeam.country,
+            founded: findUpdatedTeam.founded,
+            logo: findUpdatedTeam.logo,
+          }
+        });
+      } else {
+        res.status(200).json({
+          status: 'ERROR',
+          // data: 'User not found'
+          data: 'Equipo no encontrado'
+        })
+      }
+    } else {
+      return res.status(200).json({
+        status: 'ERROR',
+        // data: 'User not found'
+        data: 'Equipo no encontrado'
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({
+      status: 'ERROR',
+      // data: 'Something goes wrong'
+      data: 'Algo va mal'
+    })
+  }
+}
+
+export const deleteTeam = async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    const team = await Team.findOne({ where: { id: id } });
+
+    if (team) {
+      team.destroy().then(
+        res.status(200).json({
+          status: 'SUCCESS'
+        })
+      )
+    } else {
+      res.status(200).json({
+        status: 'ERROR',
+        // data: 'User not found'
+        data: 'Equipo no encontrado'
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({
+      status: 'ERROR',
       // data: 'Something goes wrong'
       data: 'Algo va mal'
     })

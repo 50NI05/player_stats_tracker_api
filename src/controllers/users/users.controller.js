@@ -143,8 +143,6 @@ export const updateUser = async (req, res) => {
           include: [Profile]
         });
 
-        console.log(findUser);
-
         res.json({
           status: 'SUCCESS',
           data: {

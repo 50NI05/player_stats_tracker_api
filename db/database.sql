@@ -31,7 +31,7 @@ CREATE TABLE t_player (
     height varchar(10) default null,
     weight varchar(10) default null,
     photo varchar(100) default null,
-    id_statistic int not null,
+    id_statistic int,
     foreign key (id_statistic) references t_statistic(id),
     PRIMARY KEY (id)
 );
@@ -148,19 +148,19 @@ create table t_penalty (
 
 create table t_statistic (
 	id int not null auto_increment,
-    id_team int not null,
-    id_league int not null,
-    id_game int not null,
-	id_substitute int not null,
-    id_shot int not null,
-    id_goal int not null,
-    id_passe int not null,
-    id_tackle int not null,
-	id_duel int not null,
-    id_dribble int not null,
-    id_foul int not null,
-    id_card int not null,
-    id_penalty int not null,
+    id_team int,
+    id_league int,
+    id_game int,
+	id_substitute int,
+    id_shot int,
+    id_goal int,
+    id_passe int,
+    id_tackle int,
+	id_duel int,
+    id_dribble int,
+    id_foul int,
+    id_card int,
+    id_penalty int,
     foreign key (id_team) references t_team(id),
     foreign key (id_league) references t_league(id),
     foreign key (id_game) references t_game(id),
@@ -179,8 +179,8 @@ create table t_statistic (
 
 create table t_squad (
 	id int not null auto_increment,
-    id_team int not null,
-    id_player int not null,
+    id_team int,
+    id_player int,
     foreign key (id_team) references t_team(id),
     foreign key (id_player) references t_player(id),
     PRIMARY KEY (id)

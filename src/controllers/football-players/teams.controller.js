@@ -1,12 +1,18 @@
-import { pool } from '../../db.js'
+// import { pool } from '../../db.js'
+import { Team } from "../../db.js"
 
-export const teams = async (req, res) => {
-  const [rows] = await pool.query('SELECT * FROM t_team')
+export const getTeam = async (req, res) => {
   try {
-    res.status(200).json({
-      status: 'SUCCESS',
-      data: rows
-    })
+    const team = await Team.findAll();
+
+    if (team) {
+      res.status(200).json({
+        status: 'SUCCESS',
+        data: team
+      })
+    } else {
+      
+    }
   } catch (error) {
     return res.status(500).json({
       status: 'Error',

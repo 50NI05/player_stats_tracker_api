@@ -30,3 +30,46 @@ export const players = (req, res, next) => {
 
   })
 }
+
+// try {
+//   const player = await Player.findOne({ where: { id: id }, include: Team })
+
+//   if (player) {
+//     res.status(200).json({
+//       status: 'SUCCESS',
+//       data: {
+//         player: {
+//           id: player.id,
+//           name: player.name,
+//           firstname: player.firstname,
+//           lastname: player.lastname,
+//           age: player.age,
+//           birth: player.birth,
+//           nationality: player.nationality,
+//           height: player.height,
+//           weight: player.weight,
+//           photo: player.photo
+//         },
+//         statistics: {
+//           team: {
+//             id: player.t_team.id,
+//             name: player.t_team.name,
+//             logo: player.t_team.logo
+//           }
+//         }
+//       }
+//     })
+//   } else {
+//     res.status(500).json({
+//       status: 'ERROR',
+//       data: 'Algo va mal'
+//     })
+//   }
+// } catch (error) {
+//   console.log(error);
+//   res.status(500).json({
+//     status: 'ERROR',
+//     // data: 'Something goes wrong'
+//     data: 'Algo va mal'
+//   })
+// }

@@ -50,6 +50,7 @@ export const User = UserModel(sequelize);
 export const Profile = ProfileModel(sequelize);
 
 User.belongsTo(Profile, { foreignKey: 'id_profile' });
-Squad.hasMany(Player, { foreignKey: 'id_player' })
-Team.hasOne(Squad, { foreignKey: 'id_team' })
+// Player.hasMany(Team, { foreignKey: 'id_team' })
+Player.belongsTo(Team, { foreignKey: 'id_team' });
+// Team.hasOne(Squad, { foreignKey: 'id_team' })
 // Player.hasMany(Statistic, { foreignKey: 'id_statistic', as: 'statistics' })

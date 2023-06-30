@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Team, Player, Squad } from "../../db.js";
+import { Team, Player } from "../../db.js";
 
 // export const squads = (req, res, next) => {
 //   const { team } = req.params
@@ -29,27 +29,30 @@ import { Team, Player, Squad } from "../../db.js";
 // }
 
 export const getSquad = async (req, res, next) => {
-  const data = req.params
+  const id = req.params.id
 
   try {
-    // const team = await Team.findOne({ where: { id: data.team } })
-    // const player = await Player.findAll()
-    const squad = await Squad.findOne({ where: { id: data.team }, include: [Team, Player] })
+    const player = await Player.findAll({ where: { id_team: id } });
+    const formattedPlayers = player.map(e => ({
+      id: e.id,
+      name: e.name,
+      age: e.age,
+      photo: e.photo
+    }))
 
-    if (team && player) {
+    if (player) {
       res.status(200).json({
         status: 'SUCCESS',
-        data: {
-          squad: squad
-        }
+        data: formattedPlayers
       })
     } else {
       res.status(500).json({
         status: 'ERROR',
-        data: 'Algo va mal'
+        data: 'Ocurrió un error al cargar los detalles del equipo.'
       })
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       status: 'ERROR',
       // data: 'Something goes wrong'

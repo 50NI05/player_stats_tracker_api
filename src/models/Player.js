@@ -47,6 +47,10 @@ export const PlayerModel = (sequelize) => {
       id_statistic: {
         type: DataTypes.INTEGER,
         allowNull: true,
+      },
+      id_team: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
       }
     },
     {

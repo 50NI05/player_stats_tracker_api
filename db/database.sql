@@ -32,7 +32,9 @@ CREATE TABLE t_player (
     weight varchar(10) default null,
     photo varchar(100) default null,
     id_statistic int,
+    id_team int,
     foreign key (id_statistic) references t_statistic(id),
+    foreign key (id_team) references t_team(id)
     PRIMARY KEY (id)
 );
 
@@ -177,14 +179,14 @@ create table t_statistic (
     PRIMARY KEY (id)
 );
 
-create table t_squad (
-	id int not null auto_increment,
-    id_team int,
-    id_player int,
-    foreign key (id_team) references t_team(id),
-    foreign key (id_player) references t_player(id),
-    PRIMARY KEY (id)
-);
+-- create table t_squad (
+-- 	id int not null auto_increment,
+--     id_team int,
+--     id_player int,
+--     foreign key (id_team) references t_team(id),
+--     foreign key (id_player) references t_player(id),
+--     PRIMARY KEY (id)
+-- );
 
 create table t_profile (
 	id int not null auto_increment,

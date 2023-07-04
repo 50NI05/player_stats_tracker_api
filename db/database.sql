@@ -198,6 +198,15 @@ INSERT INTO t_profile VALUES
   (1, 'ADMINISTRATOR'),
   (2, 'USER');
 
+INSERT INTO t_player VALUES 
+	(1, 'A. Baroja', 'Alain', 'Baroja Méndez', 34, "1989-10-23", 'Venezuela', '183 cm', '81 kg', 'https://media-3.api-sports.io/football/players/52561.png', 1, 4),
+	(2, 'F. Benítez', 'Frankarlos Cruz', 'Benítez Gutiérrez', 19, "2004-05-03", 'Venezuela', '184 cm', '70 kg', 'https://media-1.api-sports.io/football/players/354028.png', 2, 4)
+    (3, "W. Hernández", "Wilbert Miguel", "Hernández Torrealba", 22, "2001-03-02", "Venezuela", "185 cm", "82 kg", "https://media-1.api-sports.io/football/players/52563.png", 3, 4)
+    (4, "S Moises", "Salvador Moises", "Bolívar Hernandez", 17, null, "Venezuela", null, null, "https://media-3.api-sports.io/football/players/356129.png", 4, 4),
+    (5, "D. Luna", "Diego Alfonzo", "Luna Flores", 23, "2000-01-02", "Venezuela", "184 cm", "81 kg", "https://media-3.api-sports.io/football/players/52659.png", 5, 4),
+    (6, "D. Rivillo", "Daniel Alejandro", "Rivillo Godoy", 27, "1996-12-21", "Venezuela", "178 cm", "71 kg", "https://media-2.api-sports.io/football/players/53143.png", 6, 4),
+    (7, "R. Quijada", "Rubert José", "Quijada Fasciana", 34, "1989-02-10", "Venezuela", "186 cm", "73 kg", "https://media-2.api-sports.io/football/players/52572.png", 7, 4);
+
 INSERT INTO t_team VALUES 
     (1, 'Puerto Cabello', 'Venezuela', 2014, 'https://media-2.api-sports.io/football/teams/2827.png'),
     (2, 'Aragua FC', 'Venezuela', 2002, 'https://media-3.api-sports.io/football/teams/2817.png'),
@@ -216,45 +225,113 @@ INSERT INTO t_team VALUES
     (15, 'Zamora FC', 'Venezuela', 1977, 'https://media-3.api-sports.io/football/teams/2806.png'),
     (16, 'Zulia FC', 'Venezuela', 2005, 'https://media-3.api-sports.io/football/teams/2805.png');
 
-INSERT INTO t_player VALUES 
-	(1, 'A. Baroja', 'Alain', 'Baroja Méndez', 34, "1989-10-23", 'Venezuela', '183 cm', '81 kg', 'https://media-3.api-sports.io/football/players/52561.png', null, 4),
-	(2, 'F. Benítez', 'Frankarlos Cruz', 'Benítez Gutiérrez', 19, "2004-05-03", 'Venezuela', '184 cm', '70 kg', 'https://media-1.api-sports.io/football/players/354028.png', null, 4);
-
 INSERT INTO t_league VALUES 
-	(1, "Primera División", "Venezuela", "https://media-2.api-sports.io/football/leagues/299.png", 2022);
+	(1, "Primera División", "Venezuela", "https://media-2.api-sports.io/football/leagues/299.png", 2023));
     
 INSERT INTO t_game VALUES 
-	(1, 0, 0, 0, null, "Goalkeeper", null, false);
+	(1, 0, 0, 0, null, "Goalkeeper", null, false),
+    (2, 1, 1, 90, null, "Goalkeeper", null, false),
+    (3, 0, 0, 0, null, "Goalkeeper", null, false),
+    (4, 0, 0, 0, null, "Goalkeeper", null, false),
+    (5, 12, 10, 953, null, "Defender", null, false),
+    (6, 13, 9, 883, null, "Defender", null, false), 
+    (7, 10, 10, 956, null, "Defender", null, false);
     
 insert into t_substitute values 
-	(1, 0, 0, 0);
+	(1, 0, 0, 0),
+    (2, 0, 0, 0),
+    (3, 0, 0, 14),
+    (4, 0, 0, 0),
+    (5, 2, 0, 4),
+    (6, 4, 4, 4),
+    (7, 0, 2, 1);
     
 insert into t_shot values 
-	(1, null, null);
+	(1, null, null),
+    (2, null, null),
+    (3, null, null),
+    (4, null, null),
+    (5, null, null),
+    (6, null, null),
+    (7, null, null);
     
 insert into t_goal values
-	(1, 0, null, null, null);
+	(1, 0, null, null, null),
+    (2, 0, null, null, null),
+    (3, 0, null, null, null),
+    (4, 0, null, null, null),
+    (5, 0, null, null, null),
+    (6, 0, null, null, null),
+    (7, 2, null, null, null);
     
 insert into t_passe values
-	(1, null, null, null);
+	(1, null, null, null),
+    (2, null, null, null),
+    (3, null, null, null),
+    (4, null, null, null),
+    (5, null, null, null),
+    (6, null, null, null),
+    (7, null, null, null);
 
 insert into t_tackle values
-	(1, null, null, null);
+	(1, null, null, null),
+    (2, null, null, null),
+    (3, null, null, null),
+    (4, null, null, null),
+    (5, null, null, null),
+    (6, null, null, null),
+    (7, null, null, null);
     
 insert into t_duel values
-	(1, null, null);
+	(1, null, null),
+    (2, null, null),
+    (3, null, null),
+    (4, null, null),
+    (5, null, null),
+    (6, null, null),
+    (7, null, null);
     
 insert into t_dribble values
-	(1, null, null, null);
+	(1, null, null, null),
+    (2, null, null, null),
+    (3, null, null, null),
+    (4, null, null, null),
+    (5, null, null, null),
+    (6, null, null, null),
+    (7, null, null, null);
     
 insert into t_foul values
-	(1, null, null);
+	(1, null, null),
+    (2, null, null),
+    (3, null, null),
+    (4, null, null),
+    (5, null, null),
+    (6, null, null),
+    (7, null, null);
 
 insert into t_card values
-	(1, 3, 0, 0);
+	(1, 3, 0, 0),
+    (2, 0, 0, 0), 
+    (3, 0, 0, 0),
+    (4, 0, 0, 0),
+    (5, 2, 0, 0),
+    (6, 2, 0, 0),
+    (7, 2, 0, 1);
 
 insert into t_penalty values
-	(1, null, null, null, null, null);
+	(1, null, null, null, null, null),
+    (2, null, null, null, null, null),
+    (3, null, null, null, null, null),
+    (4, null, null, null, null, null),
+    (5, null, null, null, null, null),
+    (6, null, null, null, null, null), 
+    (7, null, null, null, null, null);
     
 insert into t_statistic values
-	(1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+	(1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+    (2, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2),
+    (3, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3),
+    (4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4), 
+    (5, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5),
+    (6, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6),
+    (7, 4, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7);

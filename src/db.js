@@ -28,7 +28,7 @@ import { StatisticModel } from "./models/Statistic.js";
 import { SubstituteModel } from "./models/Substitute.js";
 import { TackleModel } from "./models/Tackle.js";
 import { TeamModel } from "./models/Team.js";
-const sequelize = new Sequelize('mysql://root:9262865472@localhost:3306/playerStatsTrackerDB');
+const sequelize = new Sequelize('mysql://root:123456@localhost:3306/playerStatsTrackerDB');
 // const sequelize = new Sequelize('playerStatsTrackerDB', 'root', '123456', {host: 'localhost', dialect: 'mysql'})
 export const Card = CardModel(sequelize)
 export const Dribble = DribbleModel(sequelize)
@@ -50,7 +50,19 @@ export const User = UserModel(sequelize);
 export const Profile = ProfileModel(sequelize);
 
 User.belongsTo(Profile, { foreignKey: 'id_profile' });
-// Player.hasMany(Team, { foreignKey: 'id_team' })
+
 Player.belongsTo(Team, { foreignKey: 'id_team' });
-// Team.hasOne(Squad, { foreignKey: 'id_team' })
-// Player.hasMany(Statistic, { foreignKey: 'id_statistic', as: 'statistics' })
+Player.belongsTo(Statistic, { foreignKey: 'id_statistic'});
+
+Statistic.belongsTo(League, { foreignKey: 'id_league' })
+Statistic.belongsTo(Game, { foreignKey: 'id_game' })
+Statistic.belongsTo(Substitute, { foreignKey: 'id_substitute' })
+Statistic.belongsTo(Shot, { foreignKey: 'id_shot' })
+Statistic.belongsTo(Goal, { foreignKey: 'id_goal' })
+Statistic.belongsTo(Passe, { foreignKey: 'id_passe' })
+Statistic.belongsTo(Tackle, { foreignKey: 'id_tackle' })
+Statistic.belongsTo(Duel, { foreignKey: 'id_duel' })
+Statistic.belongsTo(Dribble, { foreignKey: 'id_dribble' })
+Statistic.belongsTo(Foul, { foreignKey: 'id_foul' })
+Statistic.belongsTo(Card, { foreignKey: 'id_card' })
+Statistic.belongsTo(Penalty, { foreignKey: 'id_penalty' })

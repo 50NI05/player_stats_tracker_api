@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Team, Player } from "../../db.js";
+import { Player } from "../../db.js";
 
 // export const squads = (req, res, next) => {
 //   const { team } = req.params

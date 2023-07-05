@@ -37,8 +37,8 @@ export const getPlayer = async (req, res) => {
   try {
     const player = await Player.findOne({ where: { id: id }, include: Team })
 
-    const statistic = await Statistic.findOne({ 
-      where: { id: id }, 
+    const statistic = await Statistic.findOne({
+      where: { id: id },
       include: [
         { model: League },
         { model: Game },
@@ -52,22 +52,22 @@ export const getPlayer = async (req, res) => {
         { model: Foul },
         { model: Card },
         { model: Penalty },
-      ] 
+      ]
     })
 
-    const statistics = statistic.toJSON();
-    const tStatistics = {};
-    Object.keys(statistics).forEach(key => {
-      if (key.startsWith('t_') && key !== 'id') {
-        const tKey = key.substr(2);
-        if (key !== 'id' && tKey !== 'id') {
-          const { id, ...tValue } = statistics[key];
-          tStatistics[tKey] = tValue;
-        }
-      }
-    });
-
     if (player) {
+      const statistics = statistic.toJSON();
+      const tStatistics = {};
+      Object.keys(statistics).forEach(key => {
+        if (key.startsWith('t_') && key !== 'id') {
+          const tKey = key.substr(2);
+          if (key !== 'id' && tKey !== 'id') {
+            const { id, ...tValue } = statistics[key];
+            tStatistics[tKey] = tValue;
+          }
+        }
+      });
+
       res.status(200).json({
         status: 'SUCCESS',
         data: {
@@ -84,19 +84,26 @@ export const getPlayer = async (req, res) => {
             photo: player.photo
           },
           statistics: {
-            team: {
-              id: player.t_team.id,
-              name: player.t_team.name,
-              logo: player.t_team.logo
-            },
-            tStatistics
+            team: player.t_team,
+            league: tStatistics.league,
+            game: tStatistics.game,
+            substitute: tStatistics.substitute,
+            shot: tStatistics.shot,
+            goal: tStatistics.goal,
+            passe: tStatistics.passe,
+            tackle: tStatistics.tackle,
+            duel: tStatistics.duel,
+            dribble: tStatistics.dribble,
+            foul: tStatistics.foul,
+            card: tStatistics.card,
+            penalty: tStatistics.penalty
           }
         }
       })
     } else {
       res.status(500).json({
         status: 'ERROR',
-        data: 'Algo va mal'
+        data: 'Lo siento, no podemos encontrar al jugador que estás buscando. Por favor, vuelva a intentarlo.'
       })
     }
   } catch (error) {

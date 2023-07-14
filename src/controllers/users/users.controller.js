@@ -104,7 +104,7 @@ export const createUser = async (req, res) => {
       } else {
         res.json({
           status: 'ERROR',
-          msg: 'Error al registrar usuario'
+          data: 'Error al registrar usuario'
         });
       }
     } else {
@@ -125,7 +125,6 @@ export const createUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   const id = req.params.id
-  // const id = req.params.id 
   const data = req.body;
 
   try {

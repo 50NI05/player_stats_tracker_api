@@ -29,6 +29,7 @@ import { SubstituteModel } from "./models/Substitute.js";
 import { TackleModel } from "./models/Tackle.js";
 import { TeamModel } from "./models/Team.js";
 const sequelize = new Sequelize('mysql://root:123456@localhost:3306/playerStatsTrackerDB');
+export const transaction = await sequelize.transaction();
 // const sequelize = new Sequelize('playerStatsTrackerDB', 'root', '123456', {host: 'localhost', dialect: 'mysql'})
 export const Card = CardModel(sequelize)
 export const Dribble = DribbleModel(sequelize)

@@ -5,11 +5,19 @@ import rules from '../../taggers/rules.json' assert { type: "json" };
 
 const taggerLanguage = 'es';
 const language = 'es';
-const MAX_QUESTIONS = 5;
+const MAX_QUESTIONS =  30;
 let question_count = 0;
 
 export const assistant = async (req, res) => {
   const data = req.body
+
+  const now = new Date();
+  const hour = now.getHours();
+  const minutes = now.getMinutes();
+
+  if (hour === 0 && minutes === 0) {
+    question_count = 0;
+  }
 
   if (question_count >= MAX_QUESTIONS) {
     return res.status(400).json({
@@ -87,7 +95,7 @@ function is_question_about_soccer(prompt) {
 };
 
 function isSoccerTerm(term) {
-  const soccerTerms = ['futbol', 'gol', 'balón', 'arquero', 'delantero', 'defensa', 'centrocampista', 'penal', 'tarjeta', 'línea', 'cancha', 'árbitro', 'fuera de juego', 'técnico', 'campeonato', 'copa', 'liga', 'mundial', 'eurocopa', 'copa américa', 'champions', 'europa league'];
+  const soccerTerms = ['fútbol', 'gol', 'balón', 'arquero', 'delantero', 'defensa', 'centrocampista', 'penal', 'tarjeta', 'línea', 'cancha', 'árbitro', 'fuera de juego', 'técnico', 'campeonato', 'copa', 'liga', 'mundial', 'eurocopa', 'copa américa', 'champions', 'europa league'];
 
   return soccerTerms.includes(term.toLowerCase());
 };

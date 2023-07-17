@@ -390,32 +390,11 @@ export const deletePlayer = async (req, res) => {
   const id = req.params.id
 
   try {
-    const player = await Player.findOne({ where: {id: id} });
-    const game = await Game.findOne({ where: { id: id } });
-    const substitute = await Substitute.findOne({ where: { id: id } });
-    const shot = await Shot.findOne({ where: { id: id } });
-    const goal = await Goal.findOne({ where: { id: id } });
-    const passe = await Passe.findOne({ where: { id: id } });
-    const tackle = await Tackle.findOne({ where: { id: id } });
-    const duel = await Duel.findOne({ where: { id: id } });
-    const dribble = await Dribble.findOne({ where: { id: id } });
-    const foul = await Foul.findOne({ where: { id: id } });
-    const card = await Card.findOne({ where: { id: id } });
-    const penalty = await Penalty.findOne({ where: { id: id } });
+    const player = await Player.findOne({ where: { id: id } });
     const statistic = await Statistic.findOne({ where: { id: id } });
 
     if (player) {
-      game.destroy();
-      substitute.destroy();
-      shot.destroy();
-      goal.destroy();
-      passe.destroy();
-      tackle.destroy();
-      duel.destroy();
-      dribble.destroy();
-      foul.destroy();
-      card.destroy();
-      penalty.destroy();
+      player.destroy();
       statistic.destroy();
 
       res.json({

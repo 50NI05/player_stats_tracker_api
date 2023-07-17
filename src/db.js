@@ -23,7 +23,6 @@ import { PasseModel } from "./models/Passe.js";
 import { PenaltyModel } from "./models/Penalty.js";
 import { PlayerModel } from "./models/Player.js";
 import { ShotModel } from "./models/Shot.js";
-import { SquadModel } from "./models/Squad.js";
 import { StatisticModel } from "./models/Statistic.js";
 import { SubstituteModel } from "./models/Substitute.js";
 import { TackleModel } from "./models/Tackle.js";
@@ -42,7 +41,6 @@ export const Passe = PasseModel(sequelize)
 export const Penalty = PenaltyModel(sequelize)
 export const Player = PlayerModel(sequelize)
 export const Shot = ShotModel(sequelize)
-export const Squad = SquadModel(sequelize)
 export const Statistic = StatisticModel(sequelize)
 export const Substitute = SubstituteModel(sequelize)
 export const Tackle = TackleModel(sequelize)

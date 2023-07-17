@@ -1,9 +1,9 @@
 import expressRouter from 'express';
-import { squads } from "../../controllers/football-players/squad.controller.js";
+import { getSquad } from "../../controllers/football-players/squad.controller.js";
 import { verifyToken } from "../../middlewares/validateToken.js";
 
 const router = expressRouter.Router()
 
-router.get('/squad/:team', verifyToken, squads)
+router.get('/getSquad/:id', verifyToken, getSquad)
 
 export default router

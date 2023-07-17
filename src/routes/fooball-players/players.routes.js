@@ -1,9 +1,12 @@
 import expressRouter from 'express';
-import { players } from "../../controllers/football-players/players.controller.js";
+import { addPlayer, deletePlayer, getPlayer, updatePlayer } from "../../controllers/football-players/players.controller.js";
 import { verifyToken } from "../../middlewares/validateToken.js";
 
 const router = expressRouter.Router()
 
-router.get('/player/:id/:season/:league', verifyToken, players)
+router.get('/getPlayer/:id', verifyToken, getPlayer)
+router.post('/addPlayer', verifyToken, addPlayer)
+router.patch('/updatePlayer/:id', verifyToken, updatePlayer)
+router.delete('/deletePlayer/:id', verifyToken, deletePlayer)
 
 export default router

@@ -1,0 +1,136 @@
+{
+  "el": [
+    {
+      "pattern": "^futbol$",
+      "tags": {
+        "NN": 1
+      }
+    },
+    {
+      "pattern": "^gol$",
+      "tags": {
+        "NN": 1
+      }
+    },
+    {
+      "pattern": "^balón$",
+      "tags": {
+        "NN": 1
+      }
+    },
+    {
+      "pattern": "^arquero$",
+      "tags": {
+        "NN": 1
+      }
+    },
+    {
+      "pattern": "^delantero$",
+      "tags": {
+        "NN": 1
+      }
+    },
+    {
+      "pattern": "^defensa$",
+      "tags": {
+        "NN": 1
+      }
+    },
+    {
+      "pattern": "^centrocampista$",
+      "tags": {
+        "NN": 1
+      }
+    },
+    {
+      "pattern": "^penal$",
+      "tags": {
+        "NN": 1
+      }
+    },
+    {
+      "pattern": "^tarjeta$",
+      "tags": {
+        "NN": 1
+      }
+    },
+    {
+      "pattern": "^línea$",
+      "tags": {
+        "NN": 1
+      }
+    },
+    {
+      "pattern": "^cancha$",
+      "tags": {
+        "NN": 1
+      }
+    },
+    {
+      "pattern": "^árbitro$",
+      "tags": {
+        "NN": 1
+      }
+    },
+    {
+      "pattern": "^fuera de juego$",
+      "tags": {
+        "NN": 1
+      }
+    },
+    {
+      "pattern": "^técnico$",
+      "tags": {
+        "NN": 1
+      }
+    },
+    {
+      "pattern": "^campeonato$",
+      "tags": {
+        "NN": 1
+      }
+    },
+    {
+      "pattern": "^copa$",
+      "tags": {
+        "NN": 1
+      }
+    },
+    {
+      "pattern": "^liga$",
+      "tags": {
+        "NN": 1
+      }
+    },
+    {
+      "pattern": "^mundial$",
+      "tags": {
+        "NN": 1
+      }
+    },
+    {
+      "pattern": "^eurocopa$",
+      "tags": {
+        "NN": 1
+      }
+    },
+    {
+      "pattern": "^copa américa$",
+      "tags": {
+        "NN": 1
+      }
+    },
+    {
+      "pattern": "^champions$",
+      "tags": {
+        "NN": 1
+      }
+    },
+    {
+      "pattern": "^europa league$",
+      "tags": {
+        "NN": 1
+      }
+    }
+  ]
+}

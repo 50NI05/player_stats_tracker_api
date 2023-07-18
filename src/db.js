@@ -1,14 +1,3 @@
-// import mysql2 from "mysql2/promise";
-// import { DB_HOST, DB_PORT, DB_DATABASE, DB_USER, DB_PASSWORD } from "./config.js";
-
-// export const pool = mysql2.createPool({
-//   host: DB_HOST,
-//   user: DB_USER,
-//   password: DB_PASSWORD,
-//   port: DB_PORT,
-//   database: DB_DATABASE,
-// });
-
 import Sequelize from "sequelize";
 import { UserModel } from "../src/models/User.js";
 import { ProfileModel } from "./models/Profile.js";
@@ -27,9 +16,10 @@ import { StatisticModel } from "./models/Statistic.js";
 import { SubstituteModel } from "./models/Substitute.js";
 import { TackleModel } from "./models/Tackle.js";
 import { TeamModel } from "./models/Team.js";
-const sequelize = new Sequelize('mysql://root:123456@localhost:3306/playerStatsTrackerDB');
+
+const sequelize = new Sequelize('mysql://root:DB_PASSWORD@localhost:PORT/DB_NAME');
 export const transaction = await sequelize.transaction();
-// const sequelize = new Sequelize('playerStatsTrackerDB', 'root', '123456', {host: 'localhost', dialect: 'mysql'})
+
 export const Card = CardModel(sequelize)
 export const Dribble = DribbleModel(sequelize)
 export const Duel = DuelModel(sequelize)

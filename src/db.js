@@ -17,7 +17,8 @@ import { SubstituteModel } from "./models/Substitute.js";
 import { TackleModel } from "./models/Tackle.js";
 import { TeamModel } from "./models/Team.js";
 
-const sequelize = new Sequelize('mysql://root:DB_PASSWORD@localhost:PORT/DB_NAME');
+import { DB_DATABASE, DB_HOST, DB_PASSWORD, DB_PORT, DB_USER } from './config.js'
+const sequelize = new Sequelize(`mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`);
 export const transaction = await sequelize.transaction();
 
 export const Card = CardModel(sequelize)
@@ -41,7 +42,7 @@ export const Profile = ProfileModel(sequelize);
 User.belongsTo(Profile, { foreignKey: 'id_profile' });
 
 Player.belongsTo(Team, { foreignKey: 'id_team' });
-Player.belongsTo(Statistic, { foreignKey: 'id_statistic'});
+Player.belongsTo(Statistic, { foreignKey: 'id_statistic' });
 
 Statistic.belongsTo(League, { foreignKey: 'id_league' })
 Statistic.belongsTo(Game, { foreignKey: 'id_game' })

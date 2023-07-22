@@ -283,6 +283,10 @@ INSERT INTO t_player VALUES
     (79, "Y. Montero", "Yeangel Emilio", "Montero Manzano", 25, "1998-12-25", "Venezuela", "179 cm", "78 kg", "https://media-3.api-sports.io/football/players/52519.png", 79, 1)
     (80, "S. Okitokandjo", "Stevy", "Okitokandjo", 29, "1994-06-18", "Países Bajos", "184 cm", "82 kg", "https://media-2.api-sports.io/football/players/96438.png", 80, 1)
 
+-- ANGOSTURA FC
+    (81, "H. Pérez", "Héctor Eduardo", "Pérez Cuevas", 32, "1991-06-16", "Venezuela", "185 cm", "70 kg", "https://media-1.api-sports.io/football/players/52449.png", 81, 2)
+    (82, "R. Gutierrez", "Reyes", "Gutierrez", 16, "2007-06-20", "Venezuela", null, null, "https://media-3.api-sports.io/football/players/424361.png", 82, 2)
+
 INSERT INTO t_team VALUES 
     (1, 'Puerto Cabello', 'Venezuela', 2014, 'https://media-2.api-sports.io/football/teams/2827.png'),
     (2, 'Angostura FC', 'Venezuela', null, "https://media-3.api-sports.io/football/teams/2838.png"),
@@ -335,13 +339,9 @@ INSERT INTO t_game VALUES
     (75, 2, 0, 32, null, "Attacker", null, false), (76, null, null, null, null, "Attacker", null, false), (77, null, null, null, null, "Attacker", null, false),
     (78, 0, 0, 0, null, "Attacker", null, false), (79, 1, 0, 21, null, "Attacker", null, false), (80, null, null, null, null, "Attacker", null, false),
 
-
-    (, 5, 0, 84, null, "Attacker", null, false),
-    (, 7, 2, 276, null, "Attacker", null, false);
-
 -- ANGOSTURA FC
-    (1, 0, 0, 0, null, "Goalkeeper", null, false),
-    (2, 1, 1, 90, null, "Goalkeeper", null, false),
+    (81, 14, 14, 1260, null, "Goalkeeper", null, false),
+    (82, 0, 0, 0, null, "Goalkeeper", null, false),
     (3, 0, 0, 0, null, "Goalkeeper", null, false),
     (4, 0, 0, 0, null, "Goalkeeper", null, false),
     (5, 12, 10, 953, null, "Defender", null, false),
@@ -394,8 +394,8 @@ insert into t_substitute values
     (77, null, null, null), (78, 0, 0, 1), (79, 1, 0, 1), (80, null, null, null);
 
 -- ANGOSTURA FC 
-    (1, 0, 0, 0),
-    (2, 0, 0, 0),
+    (81, 0, 0, 0),
+    (82, 0, 0, 2),
     (3, 0, 0, 14),
     (4, 0, 0, 0),
     (5, 2, 0, 4),
@@ -447,8 +447,8 @@ insert into t_shot values
     (72, null, null),(73, null, null),(74, null, null),(75, null, null),(76, null, null),(77, null, null),(78, null, null),(79, null, null),(80, null, null);
     
 -- ANGOSTURA FC
-    (1, null, null),
-    (2, null, null),
+    (81, null, null),
+    (82, null, null),
     (3, null, null),
     (4, null, null),
     (5, null, null),
@@ -505,8 +505,8 @@ insert into t_goal values
     (76, null, null, null, null),(77, null, null, null, null),(78, 0, null, null, null),(79, 0, null, null, null),(80, null, null, null, null);
     
 -- ANGOSTURA FC
-    (1, 0, null, null, null),
-    (2, 0, null, null, null),
+    (81, 0, null, null, null),
+    (82, 0, null, null, null),
     (3, 0, null, null, null),
     (4, 0, null, null, null),
     (5, 0, null, null, null),
@@ -561,8 +561,8 @@ insert into t_passe values
     (78, null, null, null),(79, null, null, null),(80, null, null, null);
 
 -- ANGOSTURA FC
-    (1, null, null, null),
-    (2, null, null, null),
+    (81, null, null, null),
+    (82, null, null, null),
     (3, null, null, null),
     (4, null, null, null),
     (5, null, null, null),
@@ -617,8 +617,8 @@ insert into t_tackle values
     (78, null, null, null),(79, null, null, null),(80, null, null, null);
     
 -- ANGOSTURA FC
-    (1, null, null, null),
-    (2, null, null, null),
+    (81, null, null, null),
+    (82, null, null, null),
     (3, null, null, null),
     (4, null, null, null),
     (5, null, null, null),
@@ -670,8 +670,8 @@ insert into t_duel values
     (72, null, null),(73, null, null),(74, null, null),(75, null, null),(76, null, null),(77, null, null),(78, null, null),(79, null, null),(80, null, null);
 
 -- ANGOSTURA FC
-    (1, null, null),
-    (2, null, null),
+    (81, null, null),
+    (82, null, null),
     (3, null, null),
     (4, null, null),
     (5, null, null),
@@ -726,8 +726,8 @@ insert into t_dribble values
     (78, null, null, null),(79, null, null, null),(80, null, null, null);
 
 -- ANGOSTURA FC
-    (1, null, null, null),
-    (2, null, null, null),
+    (81, null, null, null),
+    (82, null, null, null),
     (3, null, null, null),
     (4, null, null, null),
     (5, null, null, null),
@@ -779,8 +779,8 @@ insert into t_foul values
     (72, null, null),(73, null, null),(74, null, null),(75, null, null),(76, null, null),(77, null, null),(78, null, null),(79, null, null),(80, null, null);
 
 -- ANGOSTURA FC 
-    (1, null, null),
-    (2, null, null),
+    (81, null, null),
+    (82, null, null),
     (3, null, null),
     (4, null, null),
     (5, null, null),
@@ -832,8 +832,8 @@ insert into t_card values
     (73, 2, 0, 0),(74, 1, 0, 0),(75, 0, 0, 0),(76 null, null, null),(77, null, null, null),(78, 0, 0, 0),(79, 0, 0, 0),(80, null, null, null);
 
 -- ANGOSTURA FC
-    (1, 3, 0, 0),
-    (2, 0, 0, 0), 
+    (81, 4, 0, 0),
+    (82, 0, 0, 0), 
     (3, 0, 0, 0),
     (4, 0, 0, 0),
     (5, 2, 0, 0),
@@ -898,8 +898,8 @@ insert into t_penalty values
     (80, null, null, null, null, null);
 
 -- ANGOSTURA FC 
-    (1, null, null, null, null, null),
-    (2, null, null, null, null, null),
+    (81, null, null, null, null, null),
+    (82, null, null, null, null, null),
     (3, null, null, null, null, null),
     (4, null, null, null, null, null),
     (5, null, null, null, null, null),
@@ -968,3 +968,7 @@ insert into t_statistic values
     (72, 1, 1, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72, 72),(73, 1, 1, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73, 73),(74, 1, 1, 74, 74, 74, 74, 74, 74, 74, 74, 74, 74, 74),
     (75, 1, 1, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75),(76, 1, 1, 76, 76, 76, 76, 76, 76, 76, 76, 76, 76, 76),(77, 1, 1, 77, 77, 77, 77, 77, 77, 77, 77, 77, 77, 77),
     (78, 1, 1, 78, 78, 78, 78, 78, 78, 78, 78, 78, 78, 78),(79, 1, 1, 79, 79, 79, 79, 79, 79, 79, 79, 79, 79, 79),(80, 1, 1, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80, 80),
+
+-- ANGOSTURA FC
+    (81, 2, 1, 81, 81, 81, 81, 81, 81, 81, 81, 81, 81, 81),
+    (82, 2, 1, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82),

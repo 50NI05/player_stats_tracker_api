@@ -8,7 +8,7 @@ router.get('/getUsers', getUsers)
 
 router.get('/getUser/:id', getUser)
 
-router.post('/register', verifyToken, createUser)
+router.post('/register', createUser)
 
 router.patch('/updateUser/:id', verifyToken, updateUser)
 

@@ -37,6 +37,7 @@ export const getSquad = async (req, res, next) => {
       id: e.id,
       name: e.name,
       age: e.age,
+      number: e.number,
       photo: e.photo
     }))
 

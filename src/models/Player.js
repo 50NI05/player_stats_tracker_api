@@ -24,6 +24,10 @@ export const PlayerModel = (sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
+      number: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       birth: {
         type: DataTypes.DATE,
         allowNull: true,

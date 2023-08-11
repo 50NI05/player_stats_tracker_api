@@ -1,7 +1,7 @@
 // import { pool } from '../../db.js'
 import { Team } from "../../db.js"
 
-export const getTeam = async (req, res) => {
+export const getAllTeams = async (req, res) => {
   try {
     const team = await Team.findAll();
 

@@ -83,21 +83,23 @@ export const getPlayer = async (req, res) => {
             weight: player.weight,
             photo: player.photo
           },
-          statistics: {
-            team: player.t_team,
-            league: tStatistics.league,
-            game: tStatistics.game,
-            substitute: tStatistics.substitute,
-            shot: tStatistics.shot,
-            goal: tStatistics.goal,
-            passe: tStatistics.passe,
-            tackle: tStatistics.tackle,
-            duel: tStatistics.duel,
-            dribble: tStatistics.dribble,
-            foul: tStatistics.foul,
-            card: tStatistics.card,
-            penalty: tStatistics.penalty
-          }
+          statistics: [
+            {
+              team: player.t_team,
+              league: tStatistics.league,
+              game: tStatistics.game,
+              substitute: tStatistics.substitute,
+              shot: tStatistics.shot,
+              goal: tStatistics.goal,
+              passe: tStatistics.passe,
+              tackle: tStatistics.tackle,
+              duel: tStatistics.duel,
+              dribble: tStatistics.dribble,
+              foul: tStatistics.foul,
+              card: tStatistics.card,
+              penalty: tStatistics.penalty
+            }
+          ]
         }
       })
     } else {

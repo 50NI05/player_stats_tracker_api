@@ -31,6 +31,7 @@ CREATE TABLE t_player (
     height varchar(10) default null,
     weight varchar(10) default null,
     photo varchar(100) default null,
+    number int,
     id_statistic int,
     id_team int,
     foreign key (id_statistic) references t_statistic(id),

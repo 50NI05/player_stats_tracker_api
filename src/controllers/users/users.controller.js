@@ -45,15 +45,17 @@ export const getUser = async (req, res) => {
     } else {
       res.status(200).json({
         status: 'SUCCESS',
-        data: {
-          id: user.id,
-          firstname: user.firstname,
-          lastname: user.lastname,
-          email: user.email,
-          password: user.password,
-          token: user.token,
-          profile: user.t_profile.toJSON(),
-        }
+        data: [
+          {
+            id: user.id,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            email: user.email,
+            password: user.password,
+            token: user.token,
+            profile: user.t_profile.toJSON(),
+          }
+        ]
       })
     }
   } catch (error) {
@@ -131,8 +133,11 @@ export const updateUser = async (req, res) => {
     const user = await User.findOne({ where: { id: id } });
 
     if (user) {
+      const salt = await bcryptjs.genSalt()
+      const hash = await bcryptjs.hash(data.password, salt)
+
       const userUpdate = await User.update(
-        { firstname: data.firstname, lastname: data.lastname, email: data.email, password: data.password, id_profile: data.id_profile },
+        { firstname: data.firstname, lastname: data.lastname, email: data.email, password: hash, id_profile: data.id_profile },
         { where: { id: id } }
       );
 

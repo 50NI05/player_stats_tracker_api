@@ -17,7 +17,7 @@ export const logIn = async (req, res) => {
 
       if (!validatePassword) {
         res.json({
-          status: 'Error',
+          status: 'ERROR',
           // data: 'Incorrect Password! Please try again'
           data: 'Contraseña incorrecta Por favor, inténtelo de nuevo'
         })
@@ -26,7 +26,7 @@ export const logIn = async (req, res) => {
 
         if (token.length == 0) {
           res.json({
-            status: 'Error',
+            status: 'ERROR',
             data: 'Error token'
           })
         } else {
@@ -56,14 +56,14 @@ export const logIn = async (req, res) => {
       }
     } else {
       res.json({
-        status: 'Error',
+        status: 'ERROR',
         // data: 'Incorrect Email! Please try again'
         data: 'Correo electrónico incorrecto Por favor, inténtelo de nuevo'
       })
     }
   } catch (error) {
     res.status(500).json({
-      status: 'Error',
+      status: 'ERROR',
       // data: 'An error has occurred'
       data: 'Ha ocurrido un error.'
     })

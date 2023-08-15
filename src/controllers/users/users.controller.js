@@ -20,7 +20,7 @@ export const getUsers = async (req, res) => {
     })
   } catch (error) {
     return res.status(500).json({
-      status: 'Error',
+      status: 'ERROR',
       // data: 'Something goes wrong'
       data: 'Algo va mal'
     })
@@ -38,7 +38,7 @@ export const getUser = async (req, res) => {
 
     if (user === null) {
       return res.status(404).json({
-        status: 'Error',
+        status: 'ERROR',
         // data: 'User not found'
         data: 'Usuario no encontrado'
       })
@@ -60,7 +60,7 @@ export const getUser = async (req, res) => {
     }
   } catch (error) {
     return res.status(500).json({
-      status: 'Error',
+      status: 'ERROR',
       // data: 'Something goes wrong'
       data: 'Algo va mal'
     })
@@ -118,7 +118,7 @@ export const createUser = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({
-      status: 'Error',
+      status: 'ERROR',
       // data: 'Something goes wrong'
       data: 'Algo va mal'
     })
@@ -175,7 +175,7 @@ export const updateUser = async (req, res) => {
     }
   } catch (error) {
     return res.status(500).json({
-      status: 'Error',
+      status: 'ERROR',
       // data: 'Something goes wrong'
       data: 'Algo va mal'
     })
@@ -203,7 +203,7 @@ export const deleteUser = async (req, res) => {
     }
   } catch (error) {
     return res.status(500).json({
-      status: 'Error',
+      status: 'ERROR',
       // data: 'Something goes wrong'
       data: 'Algo va mal'
     })

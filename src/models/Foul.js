@@ -12,7 +12,7 @@ export const FoulModel = (sequelize) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
-      comitted: {
+      committed: {
         type: DataTypes.INTEGER,
         allowNull: true,
       },

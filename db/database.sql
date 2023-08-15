@@ -127,7 +127,7 @@ create table t_dribble (
 create table t_foul (
 	id int not null auto_increment,
     drawn int default null,
-    comitted int default null,
+    committed int default null,
     PRIMARY KEY (id)
 );
 

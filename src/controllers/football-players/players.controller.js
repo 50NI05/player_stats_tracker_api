@@ -147,7 +147,7 @@ export const addPlayer = async (req, res) => {
       total: data.goalTotal,
       conceded: data.conceded,
       assists: data.assists,
-      save: data.save
+      saves: data.saves
     }, { transaction: transaction })
 
     const passePlayer = await Passe.create({

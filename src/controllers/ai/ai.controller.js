@@ -20,13 +20,13 @@ export const assistant = async (req, res) => {
   }
 
   if (question_count >= MAX_QUESTIONS) {
-    return res.status(400).json({
+    res.json({
       status: 'ERROR',
       data: 'Se ha alcanzado el límite máximo de preguntas'
     });
   } else {
     if (!is_question_about_soccer(data.prompt)) {
-      return res.status(400).json({
+      res.json({
         status: 'ERROR',
         data: 'Solo se permiten preguntas sobre fútbol'
       });
@@ -95,7 +95,31 @@ function is_question_about_soccer(prompt) {
 };
 
 function isSoccerTerm(term) {
-  const soccerTerms = ['fútbol', 'gol', 'balón', 'arquero', 'delantero', 'defensa', 'centrocampista', 'penal', 'tarjeta', 'línea', 'cancha', 'árbitro', 'fuera de juego', 'técnico', 'campeonato', 'copa', 'liga', 'mundial', 'eurocopa', 'copa américa', 'champions', 'europa league'];
+  const soccerTerms = [
+    'fútbol', 
+    'gol',
+    'goles',
+    'balón', 
+    'arquero', 
+    'delantero', 
+    'defensa', 
+    'centrocampista', 
+    'penal', 
+    'tarjeta', 
+    'línea', 
+    'cancha', 
+    'árbitro', 
+    'fuera de juego', 
+    'técnico', 
+    'campeonato', 
+    'copa', 
+    'liga', 
+    'mundial', 
+    'eurocopa', 
+    'copa américa', 
+    'champions', 
+    'europa league'
+  ];
 
   return soccerTerms.includes(term.toLowerCase());
 };

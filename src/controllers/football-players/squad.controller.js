@@ -48,7 +48,7 @@ export const getSquad = async (req, res, next) => {
         data: formattedPlayers
       })
     } else {
-      res.status(500).json({
+      res.status(204).json({
         status: 'ERROR',
         data: 'Ocurrió un error al cargar los detalles del equipo.'
       })
@@ -73,7 +73,7 @@ export const getAllSquad = async (req, res) => {
         data: player
       })
     } else {
-      res.status(500).json({
+      res.status(204).json({
         status: 'ERROR',
         data: 'Ocurrió un error al cargar los detalles del equipo.'
       })

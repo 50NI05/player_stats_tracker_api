@@ -37,7 +37,7 @@ export const logIn = async (req, res) => {
           })
 
           if (userUpdate) {
-            res.send({
+            res.status(200).send({
               status: 'SUCCESS',
               data: {
                 token: token,

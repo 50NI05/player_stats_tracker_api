@@ -11,7 +11,10 @@ export const getAllTeams = async (req, res) => {
         data: team
       })
     } else {
-
+      res.status(204).json({
+        status: 'ERROR',
+        data: 'No se han encontrado los equipos'
+      })
     }
   } catch (error) {
     return res.status(500).json({
@@ -46,13 +49,13 @@ export const addTeam = async (req, res) => {
           }
         })
       } else {
-        res.status(200).json({
+        res.status(500).json({
           status: 'ERROR',
           data: 'Lo sentimos, en este momento no podemos completar el registro de su equipo debido a problemas técnicos. Por favor, intente registrar su equipo nuevamente.'
         })
       }
     } else {
-      res.json({
+      res.status(204).json({
         status: 'ERROR',
         data: `El nombre de equipo ${findTeam.name} ya está en uso. Por favor elija un nombre diferente e inténtelo de nuevo`
       })

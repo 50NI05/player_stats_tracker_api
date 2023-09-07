@@ -103,7 +103,7 @@ export const getPlayer = async (req, res) => {
         }
       })
     } else {
-      res.status(500).json({
+      res.status(204).json({
         status: 'ERROR',
         data: 'Lo siento, no podemos encontrar al jugador que estás buscando. Por favor, vuelva a intentarlo.'
       })
@@ -225,12 +225,12 @@ export const addPlayer = async (req, res) => {
     if (createPlayer) {
       await transaction.commit();
 
-      res.json({
+      res.status(200).json({
         status: 'SUCCESS',
         data: 'Jugador registrado exitosamente'
       });
     } else {
-      res.json({
+      resstatus(500).json({
         status: 'ERROR',
         data: 'Error al registrar jugador'
       });
@@ -238,7 +238,7 @@ export const addPlayer = async (req, res) => {
   } catch (error) {
     await transaction.rollback();
 
-    res.json({
+    res.status(500).json({
       status: 'ERROR',
       data: 'No se puede establecer una conexión con el servidor en este momento.'
     });
@@ -359,18 +359,18 @@ export const updatePlayer = async (req, res) => {
 
         // await transaction.commit();
         
-        res.json({
+        res.status(200).json({
           status: 'SUCCESS',
           data: 'Jugador actualizado exitosamente'
         });
       } else {
-        res.json({
+        res.status(204).json({
           status: 'ERROR',
           data: 'Jugador no encontrado'
         });
       }
     } else {
-      res.json({
+      res.status(204).json({
         status: 'ERROR',
         data: 'Jugador no encontrado'
       });
@@ -380,7 +380,7 @@ export const updatePlayer = async (req, res) => {
     //   result.rollback();
     // }
     
-    res.json({
+    res.status(500).json({
       status: 'ERROR',
       data: 'No se puede establecer una conexión con el servidor en este momento.'
     });
@@ -399,17 +399,17 @@ export const deletePlayer = async (req, res) => {
       player.destroy();
       statistic.destroy();
 
-      res.json({
+      res.status(200).json({
         status: 'SUCCESS'
       });
     } else {
-      res.json({
+      res.status(204).json({
         status: 'ERROR',
         data: 'Jugador no encontrado'
       });
     }
   } catch (error) {
-    res.json({
+    resstatus(500).json({
       status: 'ERROR',
       data: 'No se puede establecer una conexión con el servidor en este momento.'
     });

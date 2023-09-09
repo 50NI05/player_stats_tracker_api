@@ -133,11 +133,11 @@ export const updateUser = async (req, res) => {
     const user = await User.findOne({ where: { id: id } });
 
     if (user) {
-      const salt = await bcryptjs.genSalt()
-      const hash = await bcryptjs.hash(data.password, salt)
+      // const salt = await bcryptjs.genSalt()
+      // const hash = await bcryptjs.hash(data.password, salt)
 
       const userUpdate = await User.update(
-        { firstname: data.firstname, lastname: data.lastname, email: data.email, password: hash, id_profile: data.id_profile },
+        { firstname: data.firstname, lastname: data.lastname, email: data.email, id_profile: data.id_profile },
         { where: { id: id } }
       );
 
@@ -154,7 +154,6 @@ export const updateUser = async (req, res) => {
             firstname: findUser.firstname,
             lastname: findUser.lastname,
             email: findUser.email,
-            password: findUser.password,
             token: findUser.token,
             profile: findUser.t_profile.toJSON(),
           }
@@ -196,6 +195,50 @@ export const deleteUser = async (req, res) => {
       )
     } else {
       res.status(200).json({
+        status: 'ERROR',
+        // data: 'User not found'
+        data: 'Usuario no encontrado'
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({
+      status: 'ERROR',
+      // data: 'Something goes wrong'
+      data: 'Algo va mal'
+    })
+  }
+}
+
+export const forgotPassword = async (req, res) => {
+  const data = req.body;
+
+  try {
+    const user = await User.findOne({ where: { email: data.username } });
+
+    if (user) {
+      const salt = await bcryptjs.genSalt()
+      const hash = await bcryptjs.hash(data.password, salt)
+
+      const userUpdate = await User.update(
+        { password: hash },
+        { where: { id: user.id } }
+      );
+
+      if (userUpdate) {
+        res.status(200).json({
+          status: 'SUCCESS',
+          // data: 'User not found'
+          data: 'Contraseña cambiado correctamente'
+        })
+      } else {
+        res.status(204).json({
+          status: 'ERROR',
+          // data: 'User not found'
+          data: 'Usuario no encontrado'
+        })
+      }
+    } else {
+      res.status(204).json({
         status: 'ERROR',
         // data: 'User not found'
         data: 'Usuario no encontrado'

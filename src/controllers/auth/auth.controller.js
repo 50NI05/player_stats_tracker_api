@@ -31,10 +31,11 @@ export const logIn = async (req, res) => {
           })
         } else {
           const userUpdate = await User.update(
-            { token: token }, 
-            { where: { email: data.email },
-            include: Profile
-          })
+            { token: token },
+            {
+              where: { email: data.email },
+              include: Profile
+            })
 
           if (userUpdate) {
             res.status(200).send({
@@ -74,7 +75,7 @@ export const logOut = async (req, res) => {
   const data = req.body
 
   try {
-    const user = User.findOne({ 
+    const user = User.findOne({
       where: { id: data.idUser },
       include: Profile
     });

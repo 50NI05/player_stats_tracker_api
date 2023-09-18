@@ -213,7 +213,7 @@ export const forgotPassword = async (req, res) => {
   const data = req.body;
 
   try {
-    const user = await User.findOne({ where: { email: data.username } });
+    const user = await User.findOne({ where: { email: data.email } });
 
     if (user) {
       const salt = await bcryptjs.genSalt()

@@ -65,7 +65,10 @@ export const getSquad = async (req, res, next) => {
 
 export const getAllSquad = async (req, res) => {
   try {
-    const player = await Player.findAll({ include: Team });
+    const player = await Player.findAll({ 
+      attributes: {exclude: ['id_statistic', 'id_team']},
+      include: Team 
+    });
 
     if (player) {
       res.status(200).json({

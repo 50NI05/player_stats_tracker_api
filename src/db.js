@@ -16,6 +16,7 @@ import { StatisticModel } from "./models/Statistic.js";
 import { SubstituteModel } from "./models/Substitute.js";
 import { TackleModel } from "./models/Tackle.js";
 import { TeamModel } from "./models/Team.js";
+import { MarketValueModel } from "./models/Market-Value.js";
 
 import { DB_DATABASE, DB_HOST, DB_PASSWORD, DB_PORT, DB_USER } from './config.js'
 const sequelize = new Sequelize(`mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`);
@@ -38,6 +39,7 @@ export const Tackle = TackleModel(sequelize)
 export const Team = TeamModel(sequelize)
 export const User = UserModel(sequelize);
 export const Profile = ProfileModel(sequelize);
+export const MarketValue = MarketValueModel(sequelize)
 
 User.belongsTo(Profile, { foreignKey: 'id_profile' });
 
@@ -56,3 +58,4 @@ Statistic.belongsTo(Dribble, { foreignKey: 'id_dribble' })
 Statistic.belongsTo(Foul, { foreignKey: 'id_foul' })
 Statistic.belongsTo(Card, { foreignKey: 'id_card' })
 Statistic.belongsTo(Penalty, { foreignKey: 'id_penalty' })
+Statistic.belongsTo(MarketValue, { foreignKey: 'id_market_value' })

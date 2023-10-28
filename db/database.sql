@@ -149,6 +149,14 @@ create table t_penalty (
     PRIMARY KEY (id)
 );
 
+create table t_market_value (
+	id int not null auto_increment,
+    date datetime default null,
+    market_value varchar(10) default null,
+    market_value_currency varchar(10) default null,
+    PRIMARY KEY (id)
+);
+
 create table t_statistic (
 	id int not null auto_increment,
     id_team int,
@@ -164,6 +172,7 @@ create table t_statistic (
     id_foul int,
     id_card int,
     id_penalty int,
+    id_market_value int,
     foreign key (id_team) references t_team(id),
     foreign key (id_league) references t_league(id),
     foreign key (id_game) references t_game(id),
@@ -177,6 +186,7 @@ create table t_statistic (
     foreign key (id_foul) references t_foul(id),
     foreign key (id_card) references t_card(id),
     foreign key (id_penalty) references t_penalty(id),
+    foreign key (id_market_value) references t_market_value(id),
     PRIMARY KEY (id)
 );
 

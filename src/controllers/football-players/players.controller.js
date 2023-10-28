@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Card, Dribble, Duel, Foul, Game, Goal, League, Passe, Penalty, Player, Shot, Statistic, Substitute, Tackle, Team, transaction } from "../../db.js";
+import { Card, Dribble, Duel, Foul, Game, Goal, League, MarketValue, Passe, Penalty, Player, Shot, Statistic, Substitute, Tackle, Team, transaction } from "../../db.js";
 
 // export const players = (req, res, next) => {
 //   const { id, season, league } = req.params
@@ -52,6 +52,7 @@ export const getPlayer = async (req, res) => {
         { model: Foul },
         { model: Card },
         { model: Penalty },
+        { model: MarketValue }
       ]
     })
 
@@ -59,7 +60,7 @@ export const getPlayer = async (req, res) => {
       const statistics = statistic.toJSON();
       const tStatistics = {};
       Object.keys(statistics).forEach(key => {
-        if (key.startsWith('t_') && key !== 'id') {
+        if (key.startsWith('t_') && key !== 'id' && key === null) {
           const tKey = key.substr(2);
           if (key !== 'id' && tKey !== 'id') {
             const { id, ...tValue } = statistics[key];
@@ -99,7 +100,8 @@ export const getPlayer = async (req, res) => {
               card: tStatistics.card,
               penalty: tStatistics.penalty
             }
-          ]
+          ],
+          market_value: tStatistics.market_value
         }
       })
     } else {
@@ -192,6 +194,12 @@ export const addPlayer = async (req, res) => {
       saved: data.saved
     }, { transaction: transaction })
 
+    const marketValuePlayer = await MarketValue.create({
+      date: data.date,
+      market_value: data.market_value,
+      market_value_currency: '€'
+    }, { transaction: transaction })
+
     const statisticPlayer = await Statistic.create({
       id_team: data.id_team,
       id_league: 1,
@@ -206,6 +214,7 @@ export const addPlayer = async (req, res) => {
       id_foul: foulPlayer.id,
       id_card: cardPlayer.id,
       id_penalty: penaltyPlayer.id,
+      id_market_value: marketValuePlayer.id
     }, { transaction: transaction })
 
     const createPlayer = await Player.create({
@@ -251,7 +260,7 @@ export const updatePlayer = async (req, res) => {
   // let transactionFinished = false;
 
   try {
-    const player = await Player.findOne({ where: {id: id} })
+    const player = await Player.findOne({ where: { id: id } })
 
     if (player) {
       const gameUpdated = await Game.update({
@@ -324,6 +333,12 @@ export const updatePlayer = async (req, res) => {
         saved: data.saved
       }, { where: { id: id } }, { transaction: transaction })
 
+      const marketValueUpdated = await MarketValue.update({
+        date: data.date,
+        market_value: data.market_valuey,
+        market_value_currency: data.market_value_currency,
+      }, { where: { id: id } }, { transaction: transaction })
+
       const statisticUpdated = await Statistic.update({
         id_team: data.id_team,
         id_league: 1,
@@ -338,6 +353,7 @@ export const updatePlayer = async (req, res) => {
         id_foul: foulUpdated.id,
         id_card: cardUpdated.id,
         id_penalty: penaltyUpdated.id,
+        id_market_value: marketValueUpdated.id
       }, { where: { id: id } }, { transaction: transaction })
 
       const playerUpdated = await Player.update({
@@ -352,13 +368,13 @@ export const updatePlayer = async (req, res) => {
         photo: data.photo,
         id_statistic: statisticUpdated.id,
         id_team: data.id_team
-      }, { where: {id: id} }, { transaction: transaction })
+      }, { where: { id: id } }, { transaction: transaction })
 
       if (playerUpdated) {
         // transactionFinished = true;
 
         // await transaction.commit();
-        
+
         res.status(200).json({
           status: 'SUCCESS',
           data: 'Jugador actualizado exitosamente'
@@ -379,7 +395,7 @@ export const updatePlayer = async (req, res) => {
     // if (!transactionFinished) {
     //   result.rollback();
     // }
-    
+
     res.status(500).json({
       status: 'ERROR',
       data: 'No se puede establecer una conexión con el servidor en este momento.'
@@ -393,10 +409,34 @@ export const deletePlayer = async (req, res) => {
 
   try {
     const player = await Player.findOne({ where: { id: id } });
+    const game = await Game.findOne({ where: { id: id } });
+    const substitute = await Substitute.findOne({ where: { id: id } });
+    const shot = await Shot.findOne({ where: { id: id } });
+    const goal = await Goal.findOne({ where: { id: id } });
+    const passe = await Passe.findOne({ where: { id: id } });
+    const tackle = await Tackle.findOne({ where: { id: id } });
+    const duel = await Duel.findOne({ where: { id: id } });
+    const dribble = await Dribble.findOne({ where: { id: id } });
+    const foul = await Foul.findOne({ where: { id: id } });
+    const card = await Card.findOne({ where: { id: id } });
+    const penalty = await Penalty.findOne({ where: { id: id } });
+    const market_value = await MarketValue.findOne({ where: { id: id } });
     const statistic = await Statistic.findOne({ where: { id: id } });
 
     if (player) {
       player.destroy();
+      game.destroy()
+      substitute.destroy()
+      shot.destroy()
+      goal.destroy()
+      passe.destroy()
+      tackle.destroy()
+      duel.destroy()
+      dribble.destroy()
+      foul.destroy()
+      card.destroy()
+      penalty.destroy()
+      market_value.destroy()
       statistic.destroy();
 
       res.status(200).json({

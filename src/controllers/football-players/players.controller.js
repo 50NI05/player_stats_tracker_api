@@ -60,9 +60,9 @@ export const getPlayer = async (req, res) => {
       const statistics = statistic.toJSON();
       const tStatistics = {};
       Object.keys(statistics).forEach(key => {
-        if (key.startsWith('t_') && key !== 'id' && key === null) {
+        if (key.startsWith('t_') && key !== 'id') {
           const tKey = key.substr(2);
-          if (key !== 'id' && tKey !== 'id') {
+          if (key !== 'id' && tKey !== 'id' && statistics[key]) {
             const { id, ...tValue } = statistics[key];
             tStatistics[tKey] = tValue;
           }

@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import { Configuration, OpenAIApi } from "openai";
+import { Resend } from 'resend';
 
 dotenv.config()
 
@@ -14,3 +15,5 @@ export const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 export const openai = new OpenAIApi(configuration);
+
+export const resend = new Resend(process.env.RESEND);

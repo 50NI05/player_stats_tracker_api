@@ -1,11 +1,7 @@
 // import { pool } from '../../db.js'
 import bcryptjs from "bcryptjs";
 import { Profile, User } from "../../db.js";
-import { Resend } from 'resend';
-import dotenv from "dotenv";
-dotenv.config()
-
-const resend = new Resend(process.env.RESEND);
+import { resend } from "../../config.js";
 
 export const getUsers = async (req, res) => {
   try {

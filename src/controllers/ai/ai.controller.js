@@ -2,6 +2,69 @@ import { openai } from '../../config.js';
 import natural from 'natural';
 import tagDict from '../../taggers/tagDict.json' assert { type: "json" };
 import rules from '../../taggers/rules.json' assert { type: "json" };
+import xlsx from "xlsx";
+import fs from "fs";
+import { response } from 'express';
+
+export const transformData = async (req, res) => {
+  const workbook = xlsx.readFile("src/shared/data-set.xlsx");
+  const shet_name_list = workbook.SheetNames;
+  const xlData = xlsx.utils.sheet_to_json(workbook.Sheets[shet_name_list[0]]);
+
+  for (const item of xlData) {
+    const object = `{"prompt": "${item.Question} -> ", "completion": "${item.Answer
+      .replace("[", "").replace("]", "")} END"}`;
+
+    await fs.appendFileSync("src/shared/data-set.jsonl", object, "utf8", function () { })
+    await fs.appendFileSync("src/shared/data-set.jsonl", "\r\n", "utf8", function () { })
+  }
+
+  res.send()
+}
+
+export const uploadFile = async (req, res) => {
+  const response = await openai.createFile(fs.createReadStream("src/shared/data-set.jsonl"), "fine-tune");
+
+  res.status(response.status).send(response.data)
+}
+
+export const listFiles = async (req, res) => {
+  const response = await openai.listFiles()
+
+  res.status(response.status).send(response.data)
+}
+
+export const retrieveFile = async (req, res) => {
+  const data = req.body
+  const response = await openai.retrieveFile(data.fileId)
+
+  try {
+    res.status(response.status).send(response.data)
+  } catch (e) {
+    res.status(404).json({
+      status: 'ERROR',
+      data: response
+    })
+  }
+}
+
+export const deleteFile = async (req, res) => {
+  const data = req.body
+  const response = await openai.deleteFile(data.fileId)
+
+  try {
+    res.status(response.status).send(response.data)
+  } catch (e) {
+    res.status(404).json({
+      status: 'ERROR',
+      data: response
+    })
+  }
+}
+
+
+
+
 
 const taggerLanguage = 'es';
 const language = 'es';

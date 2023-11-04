@@ -1,7 +1,7 @@
 // import { pool } from '../../db.js'
 import bcryptjs from "bcryptjs";
 import { Profile, User } from "../../db.js";
-// import { resend } from "../../config.js";
+import { resend } from "../../config.js";
 
 export const getUsers = async (req, res) => {
   try {
@@ -92,27 +92,27 @@ export const createUser = async (req, res) => {
           include: [Profile]
         })
 
-        // await resend.emails.send({
-        //   from: 'onboarding@resend.dev',
-        //   to: 'jonathan.programa@gmail.com',
-        //   subject: 'Registro Exitoso',
-        //   html: `
-        //     <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f2f2f2; font-family: Arial, sans-serif;">
-        //       <div style="background-color: #0073e6; color: #fff; padding: 20px; text-align: center;">
-        //         <h1>Registro Exitoso</h1>
-        //       </div>
-        //       <div style="padding: 20px;">
-        //         <p>¡Hola ${user.email}!</p>
-        //         <p>Te damos la bienvenida a Player Stats Tracker. Tu registro ha sido exitoso.</p>
-        //         <p>Gracias por unirte a nosotros. A partir de ahora, podrás acceder a todos los servicios y características que ofrecemos.</p>
-        //         <p>Si tienes alguna pregunta o necesitas asistencia, no dudes en <a href="mailto:jonathan.programa@gmail.com" style="color: #0073e6; text-decoration: none;">contactarnos</a>.</p>
-        //         <p>¡Esperamos que tengas una gran experiencia en Player Stats Tracker!</p>
-        //         <p>Saludos,</p>
-        //         <p>El Equipo de Player Stats Tracker</p>
-        //       </div>
-        //     </div>
-        //   `,
-        // });
+        await resend.emails.send({
+          from: 'onboarding@resend.dev',
+          to: 'jonathan.programa@gmail.com',
+          subject: 'Registro Exitoso',
+          html: `
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f2f2f2; font-family: Arial, sans-serif;">
+              <div style="background-color: #0073e6; color: #fff; padding: 20px; text-align: center;">
+                <h1>Registro Exitoso</h1>
+              </div>
+              <div style="padding: 20px;">
+                <p>¡Hola ${user.email}!</p>
+                <p>Te damos la bienvenida a Player Stats Tracker. Tu registro ha sido exitoso.</p>
+                <p>Gracias por unirte a nosotros. A partir de ahora, podrás acceder a todos los servicios y características que ofrecemos.</p>
+                <p>Si tienes alguna pregunta o necesitas asistencia, no dudes en <a href="mailto:jonathan.programa@gmail.com" style="color: #0073e6; text-decoration: none;">contactarnos</a>.</p>
+                <p>¡Esperamos que tengas una gran experiencia en Player Stats Tracker!</p>
+                <p>Saludos,</p>
+                <p>El Equipo de Player Stats Tracker</p>
+              </div>
+            </div>
+          `,
+        });
 
         res.json({
           status: 'SUCCESS',

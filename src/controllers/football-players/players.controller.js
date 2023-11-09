@@ -335,7 +335,7 @@ export const updatePlayer = async (req, res) => {
 
       const marketValueUpdated = await MarketValue.update({
         date: data.date,
-        market_value: data.market_valuey,
+        market_value: data.market_value,
         market_value_currency: data.market_value_currency,
       }, { where: { id: id } }, { transaction: transaction })
 

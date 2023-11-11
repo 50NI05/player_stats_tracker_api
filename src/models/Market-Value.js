@@ -9,7 +9,7 @@ export const MarketValueModel = (sequelize) => {
         primaryKey: true,
       },
       date: {
-        type: DataTypes.DATEONLY,
+        type: DataTypes.DATE,
         allowNull: true,
       },
       market_value: {

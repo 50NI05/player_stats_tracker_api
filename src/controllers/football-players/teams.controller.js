@@ -25,6 +25,32 @@ export const getAllTeams = async (req, res) => {
   }
 }
 
+export const getTeam = async (req, res) => {
+  const id = req.params.id
+
+  try {
+    const findTeam = await Team.findOne({ where: { id: id } });
+
+    if (findTeam) {
+      res.status(200).json({
+        status: 'SUCCESS',
+        data: findTeam.dataValues
+      })
+    } else {
+      res.status(204).json({
+        status: 'ERROR',
+        data: 'No se ha encontrado el equipo'
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({
+      status: 'ERROR',
+      // data: 'Something goes wrong'
+      data: 'Algo va mal'
+    })
+  }
+}
+
 export const addTeam = async (req, res) => {
   const data = req.body
   const findTeam = await Team.findOne({ where: { name: data.name } })

@@ -31,7 +31,7 @@ export const listFineTune = async (req, res) => {
   }
 }
 
-export const retireveFineTune = async (req, res) => {
+export const retrieveFineTune = async (req, res) => {
   const data = req.body
   const response = await openai.retrieveFineTune(data.fineTuneId)
 

@@ -62,9 +62,36 @@ export const deleteFile = async (req, res) => {
   }
 }
 
+export const message = async (req, res) => {
+  const data = req.body
 
+  try {
+    const response = await openai.createCompletion({
+      model: 'davinci:ft-personal:question-answer-01-2023-11-15-14-52-15',
+      prompt: data.prompt,
+      max_tokens: 50,
+      temperature: 0,
+      stop: 'END'
+    });
 
-
+    if (response.status === 200 && response.data.choices.length > 0) {
+      res.json({
+        status: 'SUCCESS',
+        data: response.data.choices[0].text
+      })
+    } else {
+      res.json({
+        status: 'ERROR',
+        data: 'Lo siento, ocurrió un problema, inténtalo más tarde'
+      })
+    }
+  } catch (error) {
+    res.json({
+      status: 'ERROR',
+      data: 'Lo siento, ocurrió un problema, inténtalo más tarde'
+    })
+  }
+}
 
 const taggerLanguage = 'es';
 const language = 'es';

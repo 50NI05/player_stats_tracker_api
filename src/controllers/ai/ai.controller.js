@@ -4,7 +4,29 @@ import tagDict from '../../taggers/tagDict.json' assert { type: "json" };
 import rules from '../../taggers/rules.json' assert { type: "json" };
 import xlsx from "xlsx";
 import fs from "fs";
-import { response } from 'express';
+
+export const listQuestions = async (req, res) => {
+  const workbook = xlsx.readFile("src/shared/Questions&Answers.xlsx");
+  const shet_name_list = workbook.SheetNames;
+  const xlData = xlsx.utils.sheet_to_json(workbook.Sheets[shet_name_list[0]]);
+  let object = []
+  let questionsSelected = []
+
+  for (const item of xlData) {
+    object.push(item.Question)
+  }
+
+  for (let i = 0; i < 3; i++) {
+    const index = Math.floor(Math.random() * object.length);
+    questionsSelected.push(object[index]);
+    object.splice(index, 1);
+  }
+
+  res.status(200).json({
+    status: 'SUCCESS',
+    data: questionsSelected
+  })
+}
 
 export const transformData = async (req, res) => {
   const workbook = xlsx.readFile("src/shared/data-set.xlsx");

@@ -91,7 +91,7 @@ export const message = async (req, res) => {
     const response = await openai.createCompletion({
       model: 'davinci:ft-personal:question-answer-01-2023-11-15-14-52-15',
       prompt: data.prompt,
-      max_tokens: 50,
+      max_tokens: 150,
       temperature: 0,
       stop: 'END'
     });
@@ -186,7 +186,7 @@ export const assistant = async (req, res) => {
 }
 
 function is_question_about_soccer(prompt) {
-  const tokenizer = new natural.WordTokenizer();
+  const tokenizer = new natural.WordTokenizer({ pattern: /[^A-Za-záéíóúüÁÉÍÓÚÜñÑ]+/ });
   const tokens = tokenizer.tokenize(prompt);
 
   // const tags = natural.BrillPOSTagger.defaultRules[taggerLanguage].split('\n');
@@ -209,9 +209,11 @@ function is_question_about_soccer(prompt) {
 function isSoccerTerm(term) {
   const soccerTerms = [
     'fútbol',
+    'futbol',
     'gol',
     'goles',
     'balón',
+    'balon',
     'jugador',
     'arquero',
     'delantero',
@@ -223,17 +225,19 @@ function isSoccerTerm(term) {
     'línea',
     'cancha',
     'árbitro',
+    'arbitro',
     'fuera de juego',
     'técnico',
+    'tecnico',
     'campeonato',
     'copa',
     'liga',
     'mundial',
     'eurocopa',
     'copa américa',
+    'copa america',
     'champions',
     'europa league',
-    'balón',
     'gol',
     'jugador',
     'equipo',
@@ -249,6 +253,7 @@ function isSoccerTerm(term) {
     'centrocampista',
     'defensor',
     'táctica',
+    'tactica',
     'estrategia',
     'fuera de juego',
     'penalti',
@@ -279,19 +284,23 @@ function isSoccerTerm(term) {
     'pase',
     'camiseta',
     'anfición',
+    'anficion',
     'trofeo',
     'celebración',
     'capitán',
     'estratega',
     'reglamento',
     'estadísticas',
+    'estadisticas',
     'goles en contra',
     'portero suplente',
     'triunfo',
     'victoria',
     'derrota',
     'empate teórico',
+    'empate teorico',
     'formación táctica',
+    'formacion tactica',
     'tiro libre',
     'arbitraje',
     'forofo',
@@ -300,16 +309,16 @@ function isSoccerTerm(term) {
     'regatear',
     'campeonato',
     'táctica defensiva',
+    'tactica defenciva',
+    'tactica ofensiva',
     'táctica ofensiva',
     'tiro a puerta',
     'tarjeta roja',
     'tarjeta amarilla',
-    'árbitro',
     'estadio',
     'himno del equipo',
     'campeonato de liga',
     'trofeo de liga',
-    'anfitrión',
     'patrocinador',
     'himno nacional',
     'entrenador asistente',

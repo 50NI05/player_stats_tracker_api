@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Card, Dribble, Duel, Foul, Game, Goal, League, MarketValue, Passe, Penalty, Player, Shot, Statistic, Substitute, Tackle, Team, transaction } from "../../db.js";
+import { newsapi } from "../../config.js";
 
 // export const players = (req, res, next) => {
 //   const { id, season, league } = req.params
@@ -31,6 +32,24 @@ import { Card, Dribble, Duel, Foul, Game, Goal, League, MarketValue, Passe, Pena
 
 //   })
 // }
+
+
+export const newsFootball = async (req, res) => {
+  newsapi.v2.topHeadlines({
+    // sources: 'Venezuela',
+    q: 'Copa América',
+    domains: 'Líder-en-Deportes',
+    category: 'sports',
+    // language: 'es',
+    country: 've',
+  }).then(response => {
+    console.log(response);
+    res.status(200).json({
+      status: "SUCCESS",
+      data: response.articles
+    })
+  });
+}
 
 export const getPlayer = async (req, res) => {
   const id = req.params.id;

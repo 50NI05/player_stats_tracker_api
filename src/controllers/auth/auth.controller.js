@@ -8,7 +8,7 @@ export const logIn = async (req, res) => {
 
   try {
     const user = await User.findOne({
-      where: { email: data.email },
+      where: { username: data.username },
       include: Profile
     });
 
@@ -22,7 +22,7 @@ export const logIn = async (req, res) => {
           data: 'Contraseña incorrecta Por favor, inténtelo de nuevo'
         })
       } else {
-        const token = await generateJWT(user.id, user.firstName, user.lastName, user.email, user.password, user.t_profile.toJSON())
+        const token = await generateJWT(user.id, user.firstName, user.lastName, user.username, user.email, user.password, user.t_profile.toJSON())
 
         if (token.length == 0) {
           res.json({
@@ -33,7 +33,7 @@ export const logIn = async (req, res) => {
           const userUpdate = await User.update(
             { token: token },
             {
-              where: { email: data.email },
+              where: { username: data.username },
               include: Profile
             })
 

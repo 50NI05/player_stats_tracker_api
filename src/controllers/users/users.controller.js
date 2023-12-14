@@ -10,6 +10,7 @@ export const getUsers = async (req, res) => {
       id: e.id,
       firstname: e.firstname,
       lastname: e.lastname,
+      username: e.username,
       email: e.email,
       token: e.token,
       profile: e.t_profile.toJSON()
@@ -51,6 +52,7 @@ export const getUser = async (req, res) => {
             id: user.id,
             firstname: user.firstname,
             lastname: user.lastname,
+            username: user.username,
             email: user.email,
             password: user.password,
             token: user.token,
@@ -81,6 +83,7 @@ export const createUser = async (req, res) => {
       const createUser = await User.create({
         firstname: data.firstname,
         lastname: data.lastname,
+        username: e.username,
         email: data.email,
         password: hash,
         id_profile: data.id_profile
@@ -94,7 +97,7 @@ export const createUser = async (req, res) => {
 
         await resend.emails.send({
           from: 'onboarding@resend.dev',
-          to: 'jonathan.programa@gmail.com',
+          to: user.email,
           subject: 'Registro Exitoso',
           html: `
             <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f2f2f2; font-family: Arial, sans-serif;">
@@ -102,7 +105,7 @@ export const createUser = async (req, res) => {
                 <h1>Registro Exitoso</h1>
               </div>
               <div style="padding: 20px;">
-                <p>¡Hola ${user.email}!</p>
+                <p>¡Hola ${user.username}!</p>
                 <p>Te damos la bienvenida a Player Stats Tracker. Tu registro ha sido exitoso.</p>
                 <p>Gracias por unirte a nosotros. A partir de ahora, podrás acceder a todos los servicios y características que ofrecemos.</p>
                 <p>Si tienes alguna pregunta o necesitas asistencia, no dudes en <a href="mailto:jonathan.programa@gmail.com" style="color: #0073e6; text-decoration: none;">contactarnos</a>.</p>
@@ -120,6 +123,7 @@ export const createUser = async (req, res) => {
             id: user.id,
             firstname: user.firstname,
             lastname: user.lastname,
+            username: e.username,
             email: user.email,
             password: user.password,
             token: user.token,
@@ -160,7 +164,13 @@ export const updateUser = async (req, res) => {
       // const hash = await bcryptjs.hash(data.password, salt)
 
       const userUpdate = await User.update(
-        { firstname: data.firstname, lastname: data.lastname, email: data.email, id_profile: data.id_profile },
+        {
+          firstname: data.firstname,
+          lastname: data.lastname,
+          username: e.username,
+          email: data.email,
+          id_profile: data.id_profile
+        },
         { where: { id: id } }
       );
 
@@ -176,6 +186,7 @@ export const updateUser = async (req, res) => {
             id: findUser.id,
             firstname: findUser.firstname,
             lastname: findUser.lastname,
+            username: e.username,
             email: findUser.email,
             token: findUser.token,
             profile: findUser.t_profile.toJSON(),

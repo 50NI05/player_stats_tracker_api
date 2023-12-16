@@ -2,6 +2,7 @@
 import { generateJWT } from '../../helpers/generateJWT.js';
 import bcryptjs from "bcryptjs";
 import { Profile, User } from "../../db.js";
+import jwt from "jsonwebtoken";
 
 export const logIn = async (req, res) => {
   const data = req.body;
@@ -103,5 +104,23 @@ export const logOut = async (req, res) => {
       status: 'ERROR',
       data: 'Ha ocurrido un error.'
     });
+  }
+}
+
+export const validateSession = async (req, res) => {
+  const data = req.body
+
+  try {
+    const verified = await jwt.verify(data.session, process.env.TOKEN_SECRET)
+
+    res.status(200).json({
+      status: 'SUCCESS',
+      data: 'El token es válido'
+    })
+  } catch (error) {
+    res.status(400).json({
+      status: 'ERROR',
+      data: 'El token no es válido'
+    })
   }
 }

@@ -83,7 +83,7 @@ export const createUser = async (req, res) => {
       const createUser = await User.create({
         firstname: data.firstname,
         lastname: data.lastname,
-        username: e.username,
+        username: data.username,
         email: data.email,
         password: hash,
         id_profile: data.id_profile
@@ -123,7 +123,7 @@ export const createUser = async (req, res) => {
             id: user.id,
             firstname: user.firstname,
             lastname: user.lastname,
-            username: e.username,
+            username: user.username,
             email: user.email,
             password: user.password,
             token: user.token,
@@ -167,7 +167,7 @@ export const updateUser = async (req, res) => {
         {
           firstname: data.firstname,
           lastname: data.lastname,
-          username: e.username,
+          username: data.username,
           email: data.email,
           id_profile: data.id_profile
         },
@@ -186,7 +186,7 @@ export const updateUser = async (req, res) => {
             id: findUser.id,
             firstname: findUser.firstname,
             lastname: findUser.lastname,
-            username: e.username,
+            username: findUser.username,
             email: findUser.email,
             token: findUser.token,
             profile: findUser.t_profile.toJSON(),

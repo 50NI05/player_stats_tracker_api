@@ -255,7 +255,7 @@ export const addPlayer = async (req, res) => {
 
       res.status(200).json({
         status: 'SUCCESS',
-        data: 'Jugador registrado exitosamente'
+        data: '¡Éxito! Has agregado un nuevo jugador al equipo. ¡Bienvenido al juego!'
       });
     } else {
       resstatus(500).json({

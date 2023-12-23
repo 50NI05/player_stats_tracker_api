@@ -37,11 +37,11 @@ import { newsapi } from "../../config.js";
 export const newsFootball = async (req, res) => {
   newsapi.v2.topHeadlines({
     // sources: 'Venezuela',
-    q: 'Copa América',
-    domains: 'Líder-en-Deportes',
+    q: ['Fútbol', 'Football', 'Copa América', 'Futve'],
+    // domains: 'Líder-en-Deportes',
     category: 'sports',
     // language: 'es',
-    country: 've',
+    // country: 've,',
   }).then(response => {
     console.log(response);
     res.status(200).json({

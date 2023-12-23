@@ -147,14 +147,14 @@ export const assistant = async (req, res) => {
         question_count++;
 
         const response = await openai.createChatCompletion({
-          model: "gpt-3.5-turbo",
+          model: "gpt-3.5-turbo-1106",
           messages: [
             {
               role: "assistant",
               content: data.prompt
             }
           ],
-          max_tokens: 4050,
+          max_tokens: 4096,
           temperature: 0,
         });
 
@@ -322,7 +322,7 @@ function isSoccerTerm(term) {
     'patrocinador',
     'himno nacional',
     'entrenador asistente',
-    'club deportivo'
+    'club deportivo',
   ];
 
   return soccerTerms.includes(term.toLowerCase());

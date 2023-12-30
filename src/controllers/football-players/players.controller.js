@@ -151,59 +151,59 @@ export const addPlayer = async (req, res) => {
       position: data.position,
       rating: data.rating,
       captain: data.captain
-    }, { transaction: transaction })
+    })
 
     const substitutePlayer = await Substitute.create({
       in: data.in,
       out: data.out,
       bench: data.bench
-    }, { transaction: transaction })
+    })
 
     const shotPlayer = await Shot.create({
       total: data.shotTotal,
       on: data.shotOn
-    }, { transaction: transaction })
+    })
 
     const goalPlayer = await Goal.create({
       total: data.goalTotal,
       conceded: data.conceded,
       assists: data.assists,
       saves: data.saves
-    }, { transaction: transaction })
+    })
 
     const passePlayer = await Passe.create({
       total: data.passeTotal,
       key: data.key,
       accuracy: data.accuracy
-    }, { transaction: transaction })
+    })
 
     const tacklePlayer = await Tackle.create({
       total: data.tackleTotal,
       blocks: data.blocks,
       interceptions: data.interceptions
-    }, { transaction: transaction })
+    })
 
     const duelPlayer = await Duel.create({
       total: data.duelTotal,
       won: data.duelWon
-    }, { transaction: transaction })
+    })
 
     const dribblePlayer = await Dribble.create({
       attempts: data.attempts,
       success: data.success,
       past: data.past
-    }, { transaction: transaction })
+    })
 
     const foulPlayer = await Foul.create({
       drawn: data.drawn,
       committed: data.foulCommitted
-    }, { transaction: transaction })
+    })
 
     const cardPlayer = await Card.create({
       yellow: data.yellow,
       yellowred: data.yellowred,
       red: data.red
-    }, { transaction: transaction })
+    })
 
     const penaltyPlayer = await Penalty.create({
       won: data.penaltyWon,
@@ -211,13 +211,13 @@ export const addPlayer = async (req, res) => {
       scored: data.scored,
       missed: data.missed,
       saved: data.saved
-    }, { transaction: transaction })
+    })
 
     const marketValuePlayer = await MarketValue.create({
       date: data.date,
       market_value: data.market_value,
       market_value_currency: '€'
-    }, { transaction: transaction })
+    })
 
     const statisticPlayer = await Statistic.create({
       id_team: data.id_team,
@@ -234,7 +234,7 @@ export const addPlayer = async (req, res) => {
       id_card: cardPlayer.id,
       id_penalty: penaltyPlayer.id,
       id_market_value: marketValuePlayer.id
-    }, { transaction: transaction })
+    })
 
     const createPlayer = await Player.create({
       name: data.name,
@@ -248,11 +248,11 @@ export const addPlayer = async (req, res) => {
       photo: data.photo,
       id_statistic: statisticPlayer.id,
       id_team: data.id_team
-    }, { transaction: transaction })
+    })
+
+    // await transaction.commit();
 
     if (createPlayer) {
-      await transaction.commit();
-
       res.status(200).json({
         status: 'SUCCESS',
         data: '¡Éxito! Has agregado un nuevo jugador al equipo. ¡Bienvenido al juego!'
@@ -264,7 +264,7 @@ export const addPlayer = async (req, res) => {
       });
     }
   } catch (error) {
-    await transaction.rollback();
+    // await transaction.rollback();
 
     res.status(500).json({
       status: 'ERROR',
@@ -290,59 +290,59 @@ export const updatePlayer = async (req, res) => {
         position: data.position,
         rating: data.rating,
         captain: data.captain
-      }, { where: { id: id } }, { transaction: transaction })
+      }, { where: { id: id } })
 
       const substituteUpdated = await Substitute.update({
         in: data.in,
         out: data.out,
         bench: data.bench
-      }, { where: { id: id } }, { transaction: transaction })
+      }, { where: { id: id } })
 
       const shotUpdated = await Shot.update({
         total: data.shotTotal,
         on: data.shotOn
-      }, { where: { id: id } }, { transaction: transaction })
+      }, { where: { id: id } })
 
       const goalUpdated = await Goal.update({
         total: data.goalTotal,
         conceded: data.conceded,
         assists: data.assists,
         save: data.save
-      }, { where: { id: id } }, { transaction: transaction })
+      }, { where: { id: id } })
 
       const passeUpdated = await Passe.update({
         total: data.passeTotal,
         key: data.key,
         accuracy: data.accuracy
-      }, { where: { id: id } }, { transaction: transaction })
+      }, { where: { id: id } })
 
       const tackleUpdated = await Tackle.update({
         total: data.tackleTotal,
         blocks: data.blocks,
         interceptions: data.interceptions
-      }, { where: { id: id } }, { transaction: transaction })
+      }, { where: { id: id } })
 
       const duelUpdated = await Duel.update({
         total: data.duelTotal,
         won: data.duelWon
-      }, { where: { id: id } }, { transaction: transaction })
+      }, { where: { id: id } })
 
       const dribbleUpdated = await Dribble.update({
         attempts: data.attempts,
         success: data.success,
         past: data.past
-      }, { where: { id: id } }, { transaction: transaction })
+      }, { where: { id: id } })
 
       const foulUpdated = await Foul.update({
         drawn: data.drawn,
         committed: data.foulCommitted
-      }, { where: { id: id } }, { transaction: transaction })
+      }, { where: { id: id } })
 
       const cardUpdated = await Card.update({
         yellow: data.yellow,
         yellowred: data.yellowred,
         red: data.red
-      }, { where: { id: id } }, { transaction: transaction })
+      }, { where: { id: id } })
 
       const penaltyUpdated = await Penalty.update({
         won: data.penaltyWon,
@@ -350,13 +350,13 @@ export const updatePlayer = async (req, res) => {
         scored: data.scored,
         missed: data.missed,
         saved: data.saved
-      }, { where: { id: id } }, { transaction: transaction })
+      }, { where: { id: id } })
 
       const marketValueUpdated = await MarketValue.update({
         date: data.date,
         market_value: data.market_value,
         market_value_currency: data.market_value_currency,
-      }, { where: { id: id } }, { transaction: transaction })
+      }, { where: { id: id } })
 
       const statisticUpdated = await Statistic.update({
         id_team: data.id_team,
@@ -373,7 +373,7 @@ export const updatePlayer = async (req, res) => {
         id_card: cardUpdated.id,
         id_penalty: penaltyUpdated.id,
         id_market_value: marketValueUpdated.id
-      }, { where: { id: id } }, { transaction: transaction })
+      }, { where: { id: id } })
 
       const playerUpdated = await Player.update({
         name: data.name,
@@ -387,7 +387,7 @@ export const updatePlayer = async (req, res) => {
         photo: data.photo,
         id_statistic: statisticUpdated.id,
         id_team: data.id_team
-      }, { where: { id: id } }, { transaction: transaction })
+      }, { where: { id: id } })
 
       if (playerUpdated) {
         // transactionFinished = true;

@@ -21,7 +21,7 @@ ALTER TABLE t_user RENAME COLUMN lastName TO lastname;
 ALTER TABLE t_user CHANGE profile id_profile int;
 
 CREATE TABLE t_player (
-	id INT(10) NOT NULL auto_increment,
+	id INT NOT NULL auto_increment,
     name varchar(50) default null,
     firstname VARCHAR(50) DEFAULT NULL,
 	lastname VARCHAR(50) DEFAULT NULL,
@@ -30,12 +30,11 @@ CREATE TABLE t_player (
     nationality varchar(50) default null,
     height varchar(10) default null,
     weight varchar(10) default null,
-    photo varchar(100) default null,
-    number int,
+    photo varchar(500) default null,
     id_statistic int,
     id_team int,
     foreign key (id_statistic) references t_statistic(id),
-    foreign key (id_team) references t_team(id)
+    foreign key (id_team) references t_team(id),
     PRIMARY KEY (id)
 );
 

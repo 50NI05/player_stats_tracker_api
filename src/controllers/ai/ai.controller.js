@@ -6,7 +6,7 @@ import xlsx from "xlsx";
 import fs from "fs";
 
 export const listQuestions = async (req, res) => {
-  const workbook = xlsx.readFile("src/shared/Questions&Answers.xlsx");
+  const workbook = xlsx.readFile("src/shared/Questions-Answers.xlsx");
   const shet_name_list = workbook.SheetNames;
   const xlData = xlsx.utils.sheet_to_json(workbook.Sheets[shet_name_list[0]]);
   let object = []
@@ -29,23 +29,23 @@ export const listQuestions = async (req, res) => {
 }
 
 export const transformData = async (req, res) => {
-  const workbook = xlsx.readFile("src/shared/data-set.xlsx");
+  const workbook = xlsx.readFile("src/shared/Questions-Answers.xlsx");
   const shet_name_list = workbook.SheetNames;
   const xlData = xlsx.utils.sheet_to_json(workbook.Sheets[shet_name_list[0]]);
 
   for (const item of xlData) {
-    const object = `{"prompt": "${item.Question} -> ", "completion": "${item.Answer
-      .replace("[", "").replace("]", "")} END"}`;
+    const object = `{"prompt": "${item.Question}", "completion": "${item.Answer
+      .replace("[", "").replace("]", "")}"}`;
 
-    await fs.appendFileSync("src/shared/data-set.jsonl", object, "utf8", function () { })
-    await fs.appendFileSync("src/shared/data-set.jsonl", "\r\n", "utf8", function () { })
+    await fs.appendFileSync("src/shared/Questions-Answers.jsonl", object, "utf8", function () { })
+    await fs.appendFileSync("src/shared/Questions-Answers.jsonl", "\r\n", "utf8", function () { })
   }
 
   res.send()
 }
 
 export const uploadFile = async (req, res) => {
-  const response = await openai.createFile(fs.createReadStream("src/shared/data-set.jsonl"), "fine-tune");
+  const response = await openai.createFile(fs.createReadStream("src/shared/Questions-Answers.jsonl"), "fine-tune");
 
   res.status(response.status).send(response.data)
 }
@@ -104,13 +104,13 @@ export const message = async (req, res) => {
     } else {
       res.json({
         status: 'ERROR',
-        data: 'Lo siento, ocurrió un problema, inténtalo más tarde'
+        data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
       })
     }
   } catch (error) {
     res.json({
       status: 'ERROR',
-      data: 'Lo siento, ocurrió un problema, inténtalo más tarde'
+      data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
     })
   }
 }
@@ -178,7 +178,7 @@ export const assistant = async (req, res) => {
         res.status(500).json({
           status: 'ERROR',
           // data: 'An error has occurred'
-          data: 'Ha ocurrido un error'
+          data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
         })
       }
     }

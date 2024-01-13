@@ -17,7 +17,7 @@ export const getProfile = async (req, res) => {
   } catch (error) {
     res.json({
       status: 'ERROR',
-      data: 'No se puede establecer una conexión con el servidor en este momento.'
+      data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde..'
     });
   }
 }

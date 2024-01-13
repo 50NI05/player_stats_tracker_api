@@ -2,6 +2,7 @@
 import bcryptjs from "bcryptjs";
 import { Profile, User } from "../../db.js";
 import { resend } from "../../config.js";
+import { sendMail } from "../mail/mail.controller.js";
 
 export const getUsers = async (req, res) => {
   try {
@@ -24,7 +25,7 @@ export const getUsers = async (req, res) => {
     return res.status(500).json({
       status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: "Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde."
     })
   }
 }
@@ -65,7 +66,32 @@ export const getUser = async (req, res) => {
     return res.status(500).json({
       status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: "Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde."
+    })
+  }
+}
+
+export const checkUser = async (req, res) => {
+  let data = req.body
+
+  try {
+    const findUser = await User.findOne({ where: { username: data.username } });
+
+    if (findUser !== null) {
+      res.json({
+        status: 'ERROR',
+        data: `Se ha verificado que ${findUser.username} ya existe en la plataforma. Por favor, elige otro nombre de usuario para continuar.`
+      });
+    } else {
+      res.json({
+        status: 'SUCCESS',
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      status: 'ERROR',
+      // data: 'Something goes wrong'
+      data: "Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde."
     })
   }
 }
@@ -74,7 +100,7 @@ export const createUser = async (req, res) => {
   let data = req.body;
 
   try {
-    const findUser = await User.findOne({ where: { email: data.email } });
+    const findUser = await User.findOne({ where: { username: data.username } });
 
     if (findUser === null) {
       const salt = await bcryptjs.genSalt()
@@ -89,23 +115,16 @@ export const createUser = async (req, res) => {
         id_profile: data.id_profile
       });
 
-      if (createUser) {
-        const user = await User.findOne({
-          where: { email: data.email },
-          include: [Profile]
-        })
-
-        await resend.emails.send({
-          from: 'onboarding@resend.dev',
-          to: user.email,
-          subject: 'Registro Exitoso',
+      sendMail(
+        {
+          mail: data.email,
           html: `
             <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f2f2f2; font-family: Arial, sans-serif;">
               <div style="background-color: #0073e6; color: #fff; padding: 20px; text-align: center;">
                 <h1>Registro Exitoso</h1>
               </div>
               <div style="padding: 20px;">
-                <p>¡Hola ${user.username}!</p>
+                <p>¡Hola ${createUser.username}!</p>
                 <p>Te damos la bienvenida a Player Stats Tracker. Tu registro ha sido exitoso.</p>
                 <p>Gracias por unirte a nosotros. A partir de ahora, podrás acceder a todos los servicios y características que ofrecemos.</p>
                 <p>Si tienes alguna pregunta o necesitas asistencia, no dudes en <a href="mailto:jonathan.programa@gmail.com" style="color: #0073e6; text-decoration: none;">contactarnos</a>.</p>
@@ -115,39 +134,47 @@ export const createUser = async (req, res) => {
               </div>
             </div>
           `,
-        });
+        }
+      )
 
-        res.json({
-          status: 'SUCCESS',
-          data: {
-            id: user.id,
-            firstname: user.firstname,
-            lastname: user.lastname,
-            username: user.username,
-            email: user.email,
-            password: user.password,
-            token: user.token,
-            profile: user.t_profile.toJSON(),
-          }
-        });
-      } else {
-        res.json({
-          status: 'ERROR',
-          data: 'Error al registrar usuario'
-        });
-      }
+      await resend.emails.send({
+        from: 'onboarding@resend.dev',
+        to: createUser.email,
+        subject: 'Registro Exitoso',
+        html: `
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f2f2f2; font-family: Arial, sans-serif;">
+              <div style="background-color: #0073e6; color: #fff; padding: 20px; text-align: center;">
+                <h1>Registro Exitoso</h1>
+              </div>
+              <div style="padding: 20px;">
+                <p>¡Hola ${createUser.username}!</p>
+                <p>Te damos la bienvenida a Player Stats Tracker. Tu registro ha sido exitoso.</p>
+                <p>Gracias por unirte a nosotros. A partir de ahora, podrás acceder a todos los servicios y características que ofrecemos.</p>
+                <p>Si tienes alguna pregunta o necesitas asistencia, no dudes en <a href="mailto:jonathan.programa@gmail.com" style="color: #0073e6; text-decoration: none;">contactarnos</a>.</p>
+                <p>¡Esperamos que tengas una gran experiencia en Player Stats Tracker!</p>
+                <p>Saludos,</p>
+                <p>El Equipo de Player Stats Tracker</p>
+              </div>
+            </div>
+          `,
+      });
+
+      res.json({
+        status: 'SUCCESS',
+        data: "Felicidades, tu registro ha sido completado con éxito. ¿Quieres iniciar sesión ahora?"
+      });
     } else {
       res.json({
         status: 'ERROR',
         // data: 'Email already exist'
-        data: 'El correo electrónico ya existe'
+        data: `Se ha verificado que ${findUser.username} ya existe en la plataforma. Por favor, elige otro nombre de usuario para continuar.`
       })
     }
   } catch (error) {
     res.status(500).json({
       status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: "Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde."
     })
   }
 }
@@ -210,7 +237,7 @@ export const updateUser = async (req, res) => {
     return res.status(500).json({
       status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: "Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde."
     })
   }
 }
@@ -238,7 +265,7 @@ export const deleteUser = async (req, res) => {
     return res.status(500).json({
       status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: "Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde."
     })
   }
 }
@@ -282,7 +309,7 @@ export const forgotPassword = async (req, res) => {
     return res.status(500).json({
       status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: "Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde."
     })
   }
 }

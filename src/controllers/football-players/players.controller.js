@@ -134,7 +134,7 @@ export const getPlayer = async (req, res) => {
     res.status(500).json({
       status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
     })
   }
 }
@@ -268,7 +268,7 @@ export const addPlayer = async (req, res) => {
 
     res.status(500).json({
       status: 'ERROR',
-      data: 'No se puede establecer una conexión con el servidor en este momento.'
+      data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
     });
   }
 }
@@ -417,7 +417,7 @@ export const updatePlayer = async (req, res) => {
 
     res.status(500).json({
       status: 'ERROR',
-      data: 'No se puede establecer una conexión con el servidor en este momento.'
+      data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
     });
   }
 }
@@ -470,7 +470,7 @@ export const deletePlayer = async (req, res) => {
   } catch (error) {
     resstatus(500).json({
       status: 'ERROR',
-      data: 'No se puede establecer una conexión con el servidor en este momento.'
+      data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
     });
   }
 }

@@ -20,7 +20,7 @@ export const getAllTeams = async (req, res) => {
     return res.status(500).json({
       status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
     })
   }
 }
@@ -46,7 +46,7 @@ export const getTeam = async (req, res) => {
     return res.status(500).json({
       status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
     })
   }
 }
@@ -90,7 +90,7 @@ export const addTeam = async (req, res) => {
     return res.status(500).json({
       status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
     })
   }
 }
@@ -141,7 +141,7 @@ export const updateTeam = async (req, res) => {
     return res.status(500).json({
       status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
     })
   }
 }
@@ -169,7 +169,7 @@ export const deleteTeam = async (req, res) => {
     return res.status(500).json({
       status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
     })
   }
 }

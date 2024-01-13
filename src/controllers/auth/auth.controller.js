@@ -20,7 +20,7 @@ export const logIn = async (req, res) => {
         res.json({
           status: 'ERROR',
           // data: 'Incorrect Password! Please try again'
-          data: 'Contraseña incorrecta Por favor, inténtelo de nuevo'
+          data: "Usuario no válido. Por favor, inténtalo nuevamente."
         })
       } else {
         const token = await generateJWT(user.id, user.firstName, user.lastName, user.username, user.email, user.password, user.t_profile.toJSON())
@@ -60,14 +60,14 @@ export const logIn = async (req, res) => {
       res.json({
         status: 'ERROR',
         // data: 'Incorrect Email! Please try again'
-        data: 'Correo electrónico incorrecto Por favor, inténtelo de nuevo'
+        data: "Usuario no válido. Por favor, inténtalo nuevamente."
       })
     }
   } catch (error) {
     res.status(500).json({
       status: 'ERROR',
       // data: 'An error has occurred'
-      data: 'Ha ocurrido un error.'
+      data: "Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde."
     })
   }
 }
@@ -102,7 +102,7 @@ export const logOut = async (req, res) => {
   } catch (error) {
     res.json({
       status: 'ERROR',
-      data: 'Ha ocurrido un error.'
+      data: "Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde."
     });
   }
 }

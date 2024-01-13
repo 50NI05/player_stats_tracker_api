@@ -58,16 +58,16 @@ export const getSquad = async (req, res, next) => {
     res.status(500).json({
       status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
     })
   }
 }
 
 export const getAllSquad = async (req, res) => {
   try {
-    const player = await Player.findAll({ 
-      attributes: {exclude: ['id_statistic', 'id_team']},
-      include: Team 
+    const player = await Player.findAll({
+      attributes: { exclude: ['id_statistic', 'id_team'] },
+      include: Team
     });
 
     if (player) {
@@ -86,7 +86,7 @@ export const getAllSquad = async (req, res) => {
     res.status(500).json({
       status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
     })
   }
 }

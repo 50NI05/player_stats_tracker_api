@@ -34,8 +34,8 @@ export const transformData = async (req, res) => {
   const xlData = xlsx.utils.sheet_to_json(workbook.Sheets[shet_name_list[0]]);
 
   for (const item of xlData) {
-    const object = `{"prompt": "${item.Question}", "completion": "${item.Answer
-      .replace("[", "").replace("]", "")}"}`;
+    const object = `{"prompt": "${item.Question} -> ", "completion": "${item.Answer
+      .replace("[", "").replace("]", "")} END"}`;
 
     await fs.appendFileSync("src/shared/Questions-Answers.jsonl", object, "utf8", function () { })
     await fs.appendFileSync("src/shared/Questions-Answers.jsonl", "\r\n", "utf8", function () { })
@@ -89,7 +89,7 @@ export const message = async (req, res) => {
 
   try {
     const response = await openai.createCompletion({
-      model: 'davinci:ft-personal:question-answer-01-2023-11-15-14-52-15',
+      model: 'ft:davinci-002:personal::8hIvEOMc',
       prompt: data.prompt,
       max_tokens: 150,
       temperature: 0,

@@ -4,7 +4,7 @@ export const createFineTune = async (req, res) => {
   const data = req.body
   const response = await openai.createFineTune({
     training_file: data.fileId,
-    model: 'davinci',
+    model: 'davinci-002',
     suffix: 'question-answer-02'
   })
 

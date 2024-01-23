@@ -443,20 +443,20 @@ export const deletePlayer = async (req, res) => {
     const statistic = await Statistic.findOne({ where: { id: id } });
 
     if (player) {
-      player.destroy();
-      game.destroy()
-      substitute.destroy()
-      shot.destroy()
-      goal.destroy()
-      passe.destroy()
-      tackle.destroy()
-      duel.destroy()
-      dribble.destroy()
-      foul.destroy()
-      card.destroy()
-      penalty.destroy()
-      market_value.destroy()
-      statistic.destroy();
+      await player.destroy();
+      await statistic.destroy();
+      await game.destroy()
+      await substitute.destroy()
+      await shot.destroy()
+      await goal.destroy()
+      await passe.destroy()
+      await tackle.destroy()
+      await duel.destroy()
+      await dribble.destroy()
+      await foul.destroy()
+      await card.destroy()
+      await penalty.destroy()
+      await market_value.destroy()
 
       res.status(200).json({
         status: 'SUCCESS'
@@ -468,7 +468,7 @@ export const deletePlayer = async (req, res) => {
       });
     }
   } catch (error) {
-    resstatus(500).json({
+    res.status(500).json({
       status: 'ERROR',
       data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
     });

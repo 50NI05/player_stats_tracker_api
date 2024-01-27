@@ -50,7 +50,7 @@ export const getSquad = async (req, res, next) => {
     } else {
       res.status(204).json({
         status: 'ERROR',
-        data: 'Ocurrió un error al cargar los detalles del equipo.'
+        data: 'Ocurrió un error al cargar los detalles del equipo. Por favor, intenta nuevamente más tarde.'
       })
     }
   } catch (error) {

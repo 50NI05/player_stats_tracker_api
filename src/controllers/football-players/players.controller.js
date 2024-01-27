@@ -43,7 +43,7 @@ export const newsFootball = async (req, res) => {
     // language: 'es',
     // country: 've,',
   }).then(response => {
-    console.log(response);
+    // console.log(response);
     res.status(200).json({
       status: "SUCCESS",
       data: response.articles
@@ -255,12 +255,12 @@ export const addPlayer = async (req, res) => {
     if (createPlayer) {
       res.status(200).json({
         status: 'SUCCESS',
-        data: '¡Éxito! Has agregado un nuevo jugador al equipo. ¡Bienvenido al juego!'
+        data: '¡Éxito! Has agregado un nuevo jugador al equipo.'
       });
     } else {
       resstatus(500).json({
         status: 'ERROR',
-        data: 'Error al registrar jugador'
+        data: 'Ha ocurrido un error al intentar registrar al jugador. Por favor, verifica la información proporcionada e inténtalo de nuevo.'
       });
     }
   } catch (error) {
@@ -401,13 +401,13 @@ export const updatePlayer = async (req, res) => {
       } else {
         res.status(204).json({
           status: 'ERROR',
-          data: 'Jugador no encontrado'
+          data: 'No pudimos encontrar información sobre el jugador que estás buscando. Por favor, inténtalo nuevamente.'
         });
       }
     } else {
       res.status(204).json({
         status: 'ERROR',
-        data: 'Jugador no encontrado'
+        data: 'No pudimos encontrar información sobre el jugador que estás buscando. Por favor, inténtalo nuevamente.'
       });
     }
   } catch (error) {

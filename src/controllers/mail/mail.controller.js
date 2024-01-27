@@ -40,7 +40,7 @@ export const sendMail = async (req, res) => {
   const mailOptions = {
     from: "<jonathan.programa@gmail.com>",
     to: `${data.mail}`,
-    subject: "Código de Activación",
+    subject: `${data.title}`,
     html: `${data.html}`
   }
 

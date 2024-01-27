@@ -89,9 +89,9 @@ export const message = async (req, res) => {
 
   try {
     const response = await openai.createCompletion({
-      model: 'ft:davinci-002:personal::8hIvEOMc',
+      model: 'gpt-3.5-turbo-instruct',
       prompt: data.prompt,
-      max_tokens: 150,
+      max_tokens: 100,
       temperature: 0,
       stop: 'END'
     });
@@ -323,6 +323,11 @@ function isSoccerTerm(term) {
     'himno nacional',
     'entrenador asistente',
     'club deportivo',
+    'estadio',
+    'goleador',
+    'fundo',
+    'valor',
+    'actual'
   ];
 
   return soccerTerms.includes(term.toLowerCase());

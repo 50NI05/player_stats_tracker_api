@@ -117,6 +117,7 @@ export const createUser = async (req, res) => {
 
       sendMail(
         {
+          title: 'Registro Exitoso',
           mail: data.email,
           html: `
             <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f2f2f2; font-family: Arial, sans-serif;">
@@ -137,27 +138,28 @@ export const createUser = async (req, res) => {
         }
       )
 
-      await resend.emails.send({
-        from: 'onboarding@resend.dev',
-        to: createUser.email,
-        subject: 'Registro Exitoso',
-        html: `
-            <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f2f2f2; font-family: Arial, sans-serif;">
-              <div style="background-color: #0073e6; color: #fff; padding: 20px; text-align: center;">
-                <h1>Registro Exitoso</h1>
-              </div>
-              <div style="padding: 20px;">
-                <p>¡Hola ${createUser.username}!</p>
-                <p>Te damos la bienvenida a Player Stats Tracker. Tu registro ha sido exitoso.</p>
-                <p>Gracias por unirte a nosotros. A partir de ahora, podrás acceder a todos los servicios y características que ofrecemos.</p>
-                <p>Si tienes alguna pregunta o necesitas asistencia, no dudes en <a href="mailto:jonathan.programa@gmail.com" style="color: #0073e6; text-decoration: none;">contactarnos</a>.</p>
-                <p>¡Esperamos que tengas una gran experiencia en Player Stats Tracker!</p>
-                <p>Saludos,</p>
-                <p>El Equipo de Player Stats Tracker</p>
-              </div>
-            </div>
-          `,
-      });
+      // await resend.emails.send({
+      //   from: 'onboarding@resend.dev',
+      //   to: createUser.email,
+      //   subject: 'Registro Exitoso',
+      //   html: `
+      //       <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f2f2f2; font-family: Arial, sans-serif;">
+      //         <div style="background-color: #0073e6; color: #fff; padding: 20px; text-align: center;">
+      //           <h1>Registro Exitoso</h1>
+      //         </div>
+      //         <div style="padding: 20px;">
+      //           <p>¡Hola ${createUser.username}!</p>
+      //           <p>Te damos la bienvenida a Player Stats Tracker. Tu registro ha sido exitoso.</p>
+      //           <p>Gracias por unirte a nosotros. A partir de ahora, podrás acceder a todos los servicios y características que ofrecemos.</p>
+      //           <p>Si tienes alguna pregunta o necesitas asistencia, no dudes en <a href="mailto:jonathan.programa@gmail.com" style="color: #0073e6; text-decoration: none;">contactarnos</a>.</p>
+      //           <p>¡Esperamos que tengas una gran experiencia en Player Stats Tracker!</p>
+      //           <p>Saludos,</p>
+      //           <p>El Equipo de Player Stats Tracker</p>
+      //         </div>
+      //       </div>
+      //     `,
+      // });
+
 
       res.json({
         status: 'SUCCESS',
@@ -274,7 +276,7 @@ export const forgotPassword = async (req, res) => {
   const data = req.body;
 
   try {
-    const user = await User.findOne({ where: { email: data.email } });
+    const user = await User.findOne({ where: { username: data.username } });
 
     if (user) {
       const salt = await bcryptjs.genSalt()
@@ -286,10 +288,34 @@ export const forgotPassword = async (req, res) => {
       );
 
       if (userUpdate) {
+        sendMail(
+          {
+            title: 'Cambio de Contraseña Exitoso',
+            mail: user.email,
+            html: `
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f2f2f2; font-family: Arial, sans-serif;">
+              <div style="background-color: #0073e6; color: #fff; padding: 20px; text-align: center;">
+                  <h1>Cambio de Contraseña Exitoso</h1>
+              </div>
+              <div style="padding: 20px;">
+                  <p>¡Hola ${data.username}!</p>
+                  <p>Te informamos que se ha realizado con éxito el cambio de tu contraseña en Player Stats Tracker.</p>
+                  <p>Desde ahora, utiliza tu nueva contraseña para acceder a todos nuestros servicios y características.</p>
+                  <p>Si realizaste este cambio, no es necesario que tomes ninguna acción adicional.</p>
+                  <p>Si no realizaste este cambio, por favor, <a href="mailto:jonathan.programa@gmail.com" style="color: #0073e6; text-decoration: none;">contáctanos</a> de inmediato.</p>
+                  <p>¡Gracias por confiar en Player Stats Tracker!</p>
+                  <p>Saludos,</p>
+                  <p>El Equipo de Player Stats Tracker</p>
+              </div>
+            </div>
+          `,
+          }
+        )
+
         res.status(200).json({
           status: 'SUCCESS',
           // data: 'User not found'
-          data: 'Contraseña cambiado correctamente'
+          data: 'Tu contraseña ha sido cambiada exitosamente'
         })
       } else {
         res.status(204).json({

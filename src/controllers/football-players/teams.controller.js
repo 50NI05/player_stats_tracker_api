@@ -13,7 +13,7 @@ export const getAllTeams = async (req, res) => {
     } else {
       res.status(204).json({
         status: 'ERROR',
-        data: 'No se han encontrado los equipos'
+        data: 'Hubo un problema al intentar obtener los datos del equipo. Por favor, vuelve a intentarlo'
       })
     }
   } catch (error) {

@@ -2,13 +2,14 @@
 import { generateJWT } from '../../helpers/generateJWT.js';
 import bcryptjs from "bcryptjs";
 import { Profile, User } from "../../db.js";
+import jwt from "jsonwebtoken";
 
 export const logIn = async (req, res) => {
   const data = req.body;
 
   try {
     const user = await User.findOne({
-      where: { email: data.email },
+      where: { username: data.username },
       include: Profile
     });
 
@@ -17,27 +18,28 @@ export const logIn = async (req, res) => {
 
       if (!validatePassword) {
         res.json({
-          status: 'Error',
+          status: 'ERROR',
           // data: 'Incorrect Password! Please try again'
-          data: 'Contraseña incorrecta Por favor, inténtelo de nuevo'
+          data: "Usuario no válido. Por favor, inténtalo nuevamente."
         })
       } else {
-        const token = await generateJWT(user.id, user.firstName, user.lastName, user.email, user.password, user.t_profile.toJSON())
+        const token = await generateJWT(user.id, user.firstName, user.lastName, user.username, user.email, user.password, user.t_profile.toJSON())
 
         if (token.length == 0) {
           res.json({
-            status: 'Error',
+            status: 'ERROR',
             data: 'Error token'
           })
         } else {
           const userUpdate = await User.update(
-            { token: token }, 
-            { where: { email: data.email },
-            include: Profile
-          })
+            { token: token },
+            {
+              where: { username: data.username },
+              include: Profile
+            })
 
           if (userUpdate) {
-            res.send({
+            res.status(200).send({
               status: 'SUCCESS',
               data: {
                 token: token,
@@ -56,16 +58,16 @@ export const logIn = async (req, res) => {
       }
     } else {
       res.json({
-        status: 'Error',
+        status: 'ERROR',
         // data: 'Incorrect Email! Please try again'
-        data: 'Correo electrónico incorrecto Por favor, inténtelo de nuevo'
+        data: "Usuario no válido. Por favor, inténtalo nuevamente."
       })
     }
   } catch (error) {
     res.status(500).json({
-      status: 'Error',
+      status: 'ERROR',
       // data: 'An error has occurred'
-      data: 'Ha ocurrido un error.'
+      data: "Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde."
     })
   }
 }
@@ -74,7 +76,7 @@ export const logOut = async (req, res) => {
   const data = req.body
 
   try {
-    const user = User.findOne({ 
+    const user = User.findOne({
       where: { id: data.idUser },
       include: Profile
     });
@@ -100,7 +102,25 @@ export const logOut = async (req, res) => {
   } catch (error) {
     res.json({
       status: 'ERROR',
-      data: 'Ha ocurrido un error.'
+      data: "Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde."
     });
+  }
+}
+
+export const validateSession = async (req, res) => {
+  const data = req.body
+
+  try {
+    const verified = await jwt.verify(data.session, process.env.TOKEN_SECRET)
+
+    res.status(200).json({
+      status: 'SUCCESS',
+      data: 'El token es válido'
+    })
+  } catch (error) {
+    res.status(400).json({
+      status: 'ERROR',
+      data: 'El token no es válido'
+    })
   }
 }

@@ -2,10 +2,122 @@ import { openai } from '../../config.js';
 import natural from 'natural';
 import tagDict from '../../taggers/tagDict.json' assert { type: "json" };
 import rules from '../../taggers/rules.json' assert { type: "json" };
+import xlsx from "xlsx";
+import fs from "fs";
+
+export const listQuestions = async (req, res) => {
+  const workbook = xlsx.readFile("src/shared/Questions-Answers.xlsx");
+  const shet_name_list = workbook.SheetNames;
+  const xlData = xlsx.utils.sheet_to_json(workbook.Sheets[shet_name_list[0]]);
+  let object = []
+  let questionsSelected = []
+
+  for (const item of xlData) {
+    object.push(item.Question)
+  }
+
+  for (let i = 0; i < 3; i++) {
+    const index = Math.floor(Math.random() * object.length);
+    questionsSelected.push(object[index]);
+    object.splice(index, 1);
+  }
+
+  res.status(200).json({
+    status: 'SUCCESS',
+    data: questionsSelected
+  })
+}
+
+export const transformData = async (req, res) => {
+  const workbook = xlsx.readFile("src/shared/Questions-Answers.xlsx");
+  const shet_name_list = workbook.SheetNames;
+  const xlData = xlsx.utils.sheet_to_json(workbook.Sheets[shet_name_list[0]]);
+
+  for (const item of xlData) {
+    const object = `{"prompt": "${item.Question} -> ", "completion": "${item.Answer
+      .replace("[", "").replace("]", "")} END"}`;
+
+    await fs.appendFileSync("src/shared/Questions-Answers.jsonl", object, "utf8", function () { })
+    await fs.appendFileSync("src/shared/Questions-Answers.jsonl", "\r\n", "utf8", function () { })
+  }
+
+  res.send()
+}
+
+export const uploadFile = async (req, res) => {
+  const response = await openai.createFile(fs.createReadStream("src/shared/Questions-Answers.jsonl"), "fine-tune");
+
+  res.status(response.status).send(response.data)
+}
+
+export const listFiles = async (req, res) => {
+  const response = await openai.listFiles()
+
+  res.status(response.status).send(response.data)
+}
+
+export const retrieveFile = async (req, res) => {
+  const data = req.body
+  const response = await openai.retrieveFile(data.fileId)
+
+  try {
+    res.status(response.status).send(response.data)
+  } catch (e) {
+    res.status(404).json({
+      status: 'ERROR',
+      data: response
+    })
+  }
+}
+
+export const deleteFile = async (req, res) => {
+  const data = req.body
+  const response = await openai.deleteFile(data.fileId)
+
+  try {
+    res.status(response.status).send(response.data)
+  } catch (e) {
+    res.status(404).json({
+      status: 'ERROR',
+      data: response
+    })
+  }
+}
+
+export const message = async (req, res) => {
+  const data = req.body
+
+  try {
+    const response = await openai.createCompletion({
+      model: 'gpt-3.5-turbo-instruct',
+      prompt: data.prompt,
+      max_tokens: 100,
+      temperature: 0,
+      stop: 'END'
+    });
+
+    if (response.status === 200 && response.data.choices.length > 0) {
+      res.json({
+        status: 'SUCCESS',
+        data: response.data.choices[0].text
+      })
+    } else {
+      res.json({
+        status: 'ERROR',
+        data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
+      })
+    }
+  } catch (error) {
+    res.json({
+      status: 'ERROR',
+      data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
+    })
+  }
+}
 
 const taggerLanguage = 'es';
 const language = 'es';
-const MAX_QUESTIONS =  30;
+const MAX_QUESTIONS = 30;
 let question_count = 0;
 
 export const assistant = async (req, res) => {
@@ -20,13 +132,13 @@ export const assistant = async (req, res) => {
   }
 
   if (question_count >= MAX_QUESTIONS) {
-    return res.status(400).json({
+    res.json({
       status: 'ERROR',
       data: 'Se ha alcanzado el límite máximo de preguntas'
     });
   } else {
     if (!is_question_about_soccer(data.prompt)) {
-      return res.status(400).json({
+      res.json({
         status: 'ERROR',
         data: 'Solo se permiten preguntas sobre fútbol'
       });
@@ -35,14 +147,14 @@ export const assistant = async (req, res) => {
         question_count++;
 
         const response = await openai.createChatCompletion({
-          model: "gpt-3.5-turbo",
+          model: "gpt-3.5-turbo-1106",
           messages: [
             {
               role: "assistant",
               content: data.prompt
             }
           ],
-          max_tokens: 4050,
+          max_tokens: 4096,
           temperature: 0,
         });
 
@@ -66,7 +178,7 @@ export const assistant = async (req, res) => {
         res.status(500).json({
           status: 'ERROR',
           // data: 'An error has occurred'
-          data: 'Ha ocurrido un error'
+          data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
         })
       }
     }
@@ -74,7 +186,7 @@ export const assistant = async (req, res) => {
 }
 
 function is_question_about_soccer(prompt) {
-  const tokenizer = new natural.WordTokenizer();
+  const tokenizer = new natural.WordTokenizer({ pattern: /[^A-Za-záéíóúüÁÉÍÓÚÜñÑ]+/ });
   const tokens = tokenizer.tokenize(prompt);
 
   // const tags = natural.BrillPOSTagger.defaultRules[taggerLanguage].split('\n');
@@ -95,7 +207,128 @@ function is_question_about_soccer(prompt) {
 };
 
 function isSoccerTerm(term) {
-  const soccerTerms = ['fútbol', 'gol', 'balón', 'arquero', 'delantero', 'defensa', 'centrocampista', 'penal', 'tarjeta', 'línea', 'cancha', 'árbitro', 'fuera de juego', 'técnico', 'campeonato', 'copa', 'liga', 'mundial', 'eurocopa', 'copa américa', 'champions', 'europa league'];
+  const soccerTerms = [
+    'fútbol',
+    'futbol',
+    'gol',
+    'goles',
+    'balón',
+    'balon',
+    'jugador',
+    'arquero',
+    'delantero',
+    'defensa',
+    'centrocampista',
+    'equipo',
+    'penal',
+    'tarjeta',
+    'línea',
+    'cancha',
+    'árbitro',
+    'arbitro',
+    'fuera de juego',
+    'técnico',
+    'tecnico',
+    'campeonato',
+    'copa',
+    'liga',
+    'mundial',
+    'eurocopa',
+    'copa américa',
+    'copa america',
+    'champions',
+    'europa league',
+    'gol',
+    'jugador',
+    'equipo',
+    'estadio',
+    'partido',
+    'arbitro',
+    'liga',
+    'copa',
+    'campeonato',
+    'entrenador',
+    'portero',
+    'delantero',
+    'centrocampista',
+    'defensor',
+    'táctica',
+    'tactica',
+    'estrategia',
+    'fuera de juego',
+    'penalti',
+    'tarjeta',
+    'remate',
+    'saque de esquina',
+    'fuera de banda',
+    'offside',
+    'hinchada',
+    'mundial',
+    'chammpions',
+    'botines',
+    'trofeo',
+    'cancha',
+    'campo',
+    'mundialista',
+    'suplente',
+    'anotar',
+    'empate',
+    'remontada',
+    'lesión',
+    'copa del mundo',
+    'copa américa',
+    'uefa',
+    'hattrick',
+    'descenso',
+    'ascenso',
+    'pase',
+    'camiseta',
+    'anfición',
+    'anficion',
+    'trofeo',
+    'celebración',
+    'capitán',
+    'estratega',
+    'reglamento',
+    'estadísticas',
+    'estadisticas',
+    'goles en contra',
+    'portero suplente',
+    'triunfo',
+    'victoria',
+    'derrota',
+    'empate teórico',
+    'empate teorico',
+    'formación táctica',
+    'formacion tactica',
+    'tiro libre',
+    'arbitraje',
+    'forofo',
+    'travesaño',
+    'cabecear',
+    'regatear',
+    'campeonato',
+    'táctica defensiva',
+    'tactica defenciva',
+    'tactica ofensiva',
+    'táctica ofensiva',
+    'tiro a puerta',
+    'tarjeta roja',
+    'tarjeta amarilla',
+    'estadio',
+    'himno del equipo',
+    'campeonato de liga',
+    'trofeo de liga',
+    'patrocinador',
+    'himno nacional',
+    'entrenador asistente',
+    'club deportivo',
+    'estadio',
+    'goleador',
+    'fundo',
+    'valor',
+    'actual'
+  ];
 
   return soccerTerms.includes(term.toLowerCase());
 };

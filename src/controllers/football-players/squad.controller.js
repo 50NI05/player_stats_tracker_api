@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Player } from "../../db.js";
+import { Player, Team } from "../../db.js";
 
 // export const squads = (req, res, next) => {
 //   const { team } = req.params
@@ -32,12 +32,14 @@ export const getSquad = async (req, res, next) => {
   const id = req.params.id
 
   try {
-    const player = await Player.findAll({ where: { id_team: id } });
+    const player = await Player.findAll({ where: { id_team: id }, include: Team });
     const formattedPlayers = player.map(e => ({
       id: e.id,
       name: e.name,
       age: e.age,
-      photo: e.photo
+      number: e.number,
+      photo: e.photo,
+      team: e.t_team
     }))
 
     if (player) {
@@ -46,7 +48,35 @@ export const getSquad = async (req, res, next) => {
         data: formattedPlayers
       })
     } else {
-      res.status(500).json({
+      res.status(204).json({
+        status: 'ERROR',
+        data: 'Ocurrió un error al cargar los detalles del equipo. Por favor, intenta nuevamente más tarde.'
+      })
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      status: 'ERROR',
+      // data: 'Something goes wrong'
+      data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
+    })
+  }
+}
+
+export const getAllSquad = async (req, res) => {
+  try {
+    const player = await Player.findAll({
+      attributes: { exclude: ['id_statistic', 'id_team'] },
+      include: Team
+    });
+
+    if (player) {
+      res.status(200).json({
+        status: 'SUCCESS',
+        data: player
+      })
+    } else {
+      res.status(204).json({
         status: 'ERROR',
         data: 'Ocurrió un error al cargar los detalles del equipo.'
       })
@@ -56,7 +86,7 @@ export const getSquad = async (req, res, next) => {
     res.status(500).json({
       status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
     })
   }
 }

@@ -1,19 +1,23 @@
 import DataTypes from "sequelize";
 
-export const FoulModel = (sequelize) => {
-  return sequelize.define('t_foul',
+export const MarketValueModel = (sequelize) => {
+  return sequelize.define('t_market_value',
     {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
-      drawn: {
-        type: DataTypes.INTEGER,
+      date: {
+        type: DataTypes.DATE,
         allowNull: true,
       },
-      committed: {
-        type: DataTypes.INTEGER,
+      market_value: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      market_value_currency: {
+        type: DataTypes.STRING,
         allowNull: true,
       },
     },

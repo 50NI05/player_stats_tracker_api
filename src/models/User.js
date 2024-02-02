@@ -17,6 +17,10 @@ export const UserModel = (sequelize) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      username: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
       email: {
         type: DataTypes.STRING,
         allowNull: true,

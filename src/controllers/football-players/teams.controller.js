@@ -1,7 +1,7 @@
 // import { pool } from '../../db.js'
 import { Team } from "../../db.js"
 
-export const getTeam = async (req, res) => {
+export const getAllTeams = async (req, res) => {
   try {
     const team = await Team.findAll();
 
@@ -11,13 +11,42 @@ export const getTeam = async (req, res) => {
         data: team
       })
     } else {
-
+      res.status(204).json({
+        status: 'ERROR',
+        data: 'Hubo un problema al intentar obtener los datos del equipo. Por favor, vuelve a intentarlo'
+      })
     }
   } catch (error) {
     return res.status(500).json({
       status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
+    })
+  }
+}
+
+export const getTeam = async (req, res) => {
+  const id = req.params.id
+
+  try {
+    const findTeam = await Team.findOne({ where: { id: id } });
+
+    if (findTeam) {
+      res.status(200).json({
+        status: 'SUCCESS',
+        data: findTeam.dataValues
+      })
+    } else {
+      res.status(204).json({
+        status: 'ERROR',
+        data: 'No se ha encontrado el equipo'
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({
+      status: 'ERROR',
+      // data: 'Something goes wrong'
+      data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
     })
   }
 }
@@ -46,13 +75,13 @@ export const addTeam = async (req, res) => {
           }
         })
       } else {
-        res.status(200).json({
+        res.status(500).json({
           status: 'ERROR',
           data: 'Lo sentimos, en este momento no podemos completar el registro de su equipo debido a problemas técnicos. Por favor, intente registrar su equipo nuevamente.'
         })
       }
     } else {
-      res.json({
+      res.status(204).json({
         status: 'ERROR',
         data: `El nombre de equipo ${findTeam.name} ya está en uso. Por favor elija un nombre diferente e inténtelo de nuevo`
       })
@@ -61,7 +90,7 @@ export const addTeam = async (req, res) => {
     return res.status(500).json({
       status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
     })
   }
 }
@@ -112,7 +141,7 @@ export const updateTeam = async (req, res) => {
     return res.status(500).json({
       status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
     })
   }
 }
@@ -140,7 +169,7 @@ export const deleteTeam = async (req, res) => {
     return res.status(500).json({
       status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: 'Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde.'
     })
   }
 }

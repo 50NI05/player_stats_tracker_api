@@ -1,6 +1,8 @@
 // import { pool } from '../../db.js'
 import bcryptjs from "bcryptjs";
 import { Profile, User } from "../../db.js";
+import { resend } from "../../config.js";
+import { sendMail } from "../mail/mail.controller.js";
 
 export const getUsers = async (req, res) => {
   try {
@@ -9,6 +11,7 @@ export const getUsers = async (req, res) => {
       id: e.id,
       firstname: e.firstname,
       lastname: e.lastname,
+      username: e.username,
       email: e.email,
       token: e.token,
       profile: e.t_profile.toJSON()
@@ -20,9 +23,9 @@ export const getUsers = async (req, res) => {
     })
   } catch (error) {
     return res.status(500).json({
-      status: 'Error',
+      status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: "Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde."
     })
   }
 }
@@ -38,29 +41,57 @@ export const getUser = async (req, res) => {
 
     if (user === null) {
       return res.status(404).json({
-        status: 'Error',
+        status: 'ERROR',
         // data: 'User not found'
         data: 'Usuario no encontrado'
       })
     } else {
       res.status(200).json({
         status: 'SUCCESS',
-        data: {
-          id: user.id,
-          firstname: user.firstname,
-          lastname: user.lastname,
-          email: user.email,
-          password: user.password,
-          token: user.token,
-          profile: user.t_profile.toJSON(),
-        }
+        data: [
+          {
+            id: user.id,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            username: user.username,
+            email: user.email,
+            password: user.password,
+            token: user.token,
+            profile: user.t_profile.toJSON(),
+          }
+        ]
       })
     }
   } catch (error) {
     return res.status(500).json({
-      status: 'Error',
+      status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: "Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde."
+    })
+  }
+}
+
+export const checkUser = async (req, res) => {
+  let data = req.body
+
+  try {
+    const findUser = await User.findOne({ where: { username: data.username } });
+
+    if (findUser !== null) {
+      res.json({
+        status: 'ERROR',
+        data: `Se ha verificado que ${findUser.username} ya existe en la plataforma. Por favor, elige otro nombre de usuario para continuar.`
+      });
+    } else {
+      res.json({
+        status: 'SUCCESS',
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      status: 'ERROR',
+      // data: 'Something goes wrong'
+      data: "Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde."
     })
   }
 }
@@ -69,7 +100,7 @@ export const createUser = async (req, res) => {
   let data = req.body;
 
   try {
-    const findUser = await User.findOne({ where: { email: data.email } });
+    const findUser = await User.findOne({ where: { username: data.username } });
 
     if (findUser === null) {
       const salt = await bcryptjs.genSalt()
@@ -78,47 +109,74 @@ export const createUser = async (req, res) => {
       const createUser = await User.create({
         firstname: data.firstname,
         lastname: data.lastname,
+        username: data.username,
         email: data.email,
         password: hash,
         id_profile: data.id_profile
       });
 
-      if (createUser) {
-        const user = await User.findOne({
-          where: { email: data.email },
-          include: [Profile]
-        })
+      sendMail(
+        {
+          title: 'Registro Exitoso',
+          mail: data.email,
+          html: `
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f2f2f2; font-family: Arial, sans-serif;">
+              <div style="background-color: #0073e6; color: #fff; padding: 20px; text-align: center;">
+                <h1>Registro Exitoso</h1>
+              </div>
+              <div style="padding: 20px;">
+                <p>¡Hola ${createUser.username}!</p>
+                <p>Te damos la bienvenida a Player Stats Tracker. Tu registro ha sido exitoso.</p>
+                <p>Gracias por unirte a nosotros. A partir de ahora, podrás acceder a todos los servicios y características que ofrecemos.</p>
+                <p>Si tienes alguna pregunta o necesitas asistencia, no dudes en <a href="mailto:jonathan.programa@gmail.com" style="color: #0073e6; text-decoration: none;">contactarnos</a>.</p>
+                <p>¡Esperamos que tengas una gran experiencia en Player Stats Tracker!</p>
+                <p>Saludos,</p>
+                <p>El Equipo de Player Stats Tracker</p>
+              </div>
+            </div>
+          `,
+        }
+      )
 
-        res.json({
-          status: 'SUCCESS',
-          data: {
-            id: user.id,
-            firstname: user.firstname,
-            lastname: user.lastname,
-            email: user.email,
-            password: user.password,
-            token: user.token,
-            profile: user.t_profile.toJSON(),
-          }
-        });
-      } else {
-        res.json({
-          status: 'ERROR',
-          data: 'Error al registrar usuario'
-        });
-      }
+      // await resend.emails.send({
+      //   from: 'onboarding@resend.dev',
+      //   to: createUser.email,
+      //   subject: 'Registro Exitoso',
+      //   html: `
+      //       <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f2f2f2; font-family: Arial, sans-serif;">
+      //         <div style="background-color: #0073e6; color: #fff; padding: 20px; text-align: center;">
+      //           <h1>Registro Exitoso</h1>
+      //         </div>
+      //         <div style="padding: 20px;">
+      //           <p>¡Hola ${createUser.username}!</p>
+      //           <p>Te damos la bienvenida a Player Stats Tracker. Tu registro ha sido exitoso.</p>
+      //           <p>Gracias por unirte a nosotros. A partir de ahora, podrás acceder a todos los servicios y características que ofrecemos.</p>
+      //           <p>Si tienes alguna pregunta o necesitas asistencia, no dudes en <a href="mailto:jonathan.programa@gmail.com" style="color: #0073e6; text-decoration: none;">contactarnos</a>.</p>
+      //           <p>¡Esperamos que tengas una gran experiencia en Player Stats Tracker!</p>
+      //           <p>Saludos,</p>
+      //           <p>El Equipo de Player Stats Tracker</p>
+      //         </div>
+      //       </div>
+      //     `,
+      // });
+
+
+      res.json({
+        status: 'SUCCESS',
+        data: "Felicidades, tu registro ha sido completado con éxito. ¿Quieres iniciar sesión ahora?"
+      });
     } else {
       res.json({
         status: 'ERROR',
         // data: 'Email already exist'
-        data: 'El correo electrónico ya existe'
+        data: `Se ha verificado que ${findUser.username} ya existe en la plataforma. Por favor, elige otro nombre de usuario para continuar.`
       })
     }
   } catch (error) {
     res.status(500).json({
-      status: 'Error',
+      status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: "Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde."
     })
   }
 }
@@ -131,8 +189,17 @@ export const updateUser = async (req, res) => {
     const user = await User.findOne({ where: { id: id } });
 
     if (user) {
+      // const salt = await bcryptjs.genSalt()
+      // const hash = await bcryptjs.hash(data.password, salt)
+
       const userUpdate = await User.update(
-        { firstname: data.firstname, lastname: data.lastname, email: data.email, password: data.password, id_profile: data.id_profile },
+        {
+          firstname: data.firstname,
+          lastname: data.lastname,
+          username: data.username,
+          email: data.email,
+          id_profile: data.id_profile
+        },
         { where: { id: id } }
       );
 
@@ -148,8 +215,8 @@ export const updateUser = async (req, res) => {
             id: findUser.id,
             firstname: findUser.firstname,
             lastname: findUser.lastname,
+            username: findUser.username,
             email: findUser.email,
-            password: findUser.password,
             token: findUser.token,
             profile: findUser.t_profile.toJSON(),
           }
@@ -170,9 +237,9 @@ export const updateUser = async (req, res) => {
     }
   } catch (error) {
     return res.status(500).json({
-      status: 'Error',
+      status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: "Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde."
     })
   }
 }
@@ -198,9 +265,77 @@ export const deleteUser = async (req, res) => {
     }
   } catch (error) {
     return res.status(500).json({
-      status: 'Error',
+      status: 'ERROR',
       // data: 'Something goes wrong'
-      data: 'Algo va mal'
+      data: "Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde."
+    })
+  }
+}
+
+export const forgotPassword = async (req, res) => {
+  const data = req.body;
+
+  try {
+    const user = await User.findOne({ where: { username: data.username } });
+
+    if (user) {
+      const salt = await bcryptjs.genSalt()
+      const hash = await bcryptjs.hash(data.password, salt)
+
+      const userUpdate = await User.update(
+        { password: hash },
+        { where: { id: user.id } }
+      );
+
+      if (userUpdate) {
+        sendMail(
+          {
+            title: 'Cambio de Contraseña Exitoso',
+            mail: user.email,
+            html: `
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f2f2f2; font-family: Arial, sans-serif;">
+              <div style="background-color: #0073e6; color: #fff; padding: 20px; text-align: center;">
+                  <h1>Cambio de Contraseña Exitoso</h1>
+              </div>
+              <div style="padding: 20px;">
+                  <p>¡Hola ${data.username}!</p>
+                  <p>Te informamos que se ha realizado con éxito el cambio de tu contraseña en Player Stats Tracker.</p>
+                  <p>Desde ahora, utiliza tu nueva contraseña para acceder a todos nuestros servicios y características.</p>
+                  <p>Si realizaste este cambio, no es necesario que tomes ninguna acción adicional.</p>
+                  <p>Si no realizaste este cambio, por favor, <a href="mailto:jonathan.programa@gmail.com" style="color: #0073e6; text-decoration: none;">contáctanos</a> de inmediato.</p>
+                  <p>¡Gracias por confiar en Player Stats Tracker!</p>
+                  <p>Saludos,</p>
+                  <p>El Equipo de Player Stats Tracker</p>
+              </div>
+            </div>
+          `,
+          }
+        )
+
+        res.status(200).json({
+          status: 'SUCCESS',
+          // data: 'User not found'
+          data: 'Tu contraseña ha sido cambiada exitosamente'
+        })
+      } else {
+        res.status(204).json({
+          status: 'ERROR',
+          // data: 'User not found'
+          data: 'Usuario no encontrado'
+        })
+      }
+    } else {
+      res.status(204).json({
+        status: 'ERROR',
+        // data: 'User not found'
+        data: 'Usuario no encontrado'
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({
+      status: 'ERROR',
+      // data: 'Something goes wrong'
+      data: "Lo sentimos, ha ocurrido un error en la plataforma. Por favor, intenta nuevamente más tarde."
     })
   }
 }

@@ -2,9 +2,9 @@
   "service": "gmail",
   "auth": {
     "type": "OAuth2",
-    "user": "YOUR_EMAIL",
-    "clientId": "GOOGLE_CLIENT_ID",
-    "clientSecret": "GOOGLE_CLIENT_SECRET",
-    "refreshToken": "GOOGLE_REFRESH_TOKEN"
-  } 
+    "user": "jonathan.programa@gmail.com",
+    "clientId": "376998947442-gat8bpa1cvhob20rl3b9j0m9agj9od2f.apps.googleusercontent.com",
+    "clientSecret": "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",
+    "refreshToken": "1//04mSArvB8DALgCgYIARAAGAQSNwF-L9IrUk7vvttJZNQZxRj2I_nQes0p5UySalEkw0XZQ2WUo4XBgALC6y9sed5OYXQ0zz5dQUY"
+  }
 }

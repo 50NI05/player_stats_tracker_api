@@ -173,6 +173,7 @@ export const createUser = async (req, res) => {
       })
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       status: 'ERROR',
       // data: 'Something goes wrong'

@@ -175,6 +175,7 @@ export const assistant = async (req, res) => {
         //   data: response.data.choices[0].text
         // })
       } catch (error) {
+        console.log(error);
         res.status(500).json({
           status: 'ERROR',
           // data: 'An error has occurred'

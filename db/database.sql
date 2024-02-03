@@ -9,6 +9,7 @@ CREATE TABLE t_user (
   firstName VARCHAR(45) DEFAULT NULL,
   lastName VARCHAR(45) DEFAULT NULL,
   email VARCHAR(100) DEFAULT NULL,
+  username VARCHAR(25) DEFAULT NULL,
   password VARCHAR(150) DEFAULT NULL,
   token VARCHAR(600) DEFAULT NULL,
   id_profile int not null,

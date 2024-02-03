@@ -13,7 +13,7 @@ export const DB_DATABASE = process.env.DB_DATABASE || 'playerStatsTrackerDB'
 export const DB_PORT = process.env.DB_PORT || 3306
 
 export const configuration = new Configuration({
-  apiKey: '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',
+  apiKey: process.env.OPENAI_API_KEY,
 });
 export const openai = new OpenAIApi(configuration);
 
